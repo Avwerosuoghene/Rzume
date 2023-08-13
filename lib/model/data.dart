@@ -18,8 +18,8 @@ List<StartMessage> screenData = [
   )
 ];
 
-List<CustomForm> formData = [
-  CustomForm(
+List<ICustomFormField> formData = [
+  ICustomFormField(
     formHint: 'Enter email',
     formLabel: 'Email',
     formPreficIcon: 'assets/icons/email.png',
@@ -32,7 +32,7 @@ List<CustomForm> formData = [
     },
     keyboardType: TextInputType.emailAddress,
   ),
-  CustomForm(
+  ICustomFormField(
     formHint: 'Enter password',
     formLabel: 'Password',
     formPreficIcon: 'assets/icons/password.png',

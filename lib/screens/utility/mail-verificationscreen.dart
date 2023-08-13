@@ -5,7 +5,6 @@ import 'package:rzume/widgets/auth-page-layout.dart';
 
 class MailVerificationScreen extends StatelessWidget {
   const MailVerificationScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     openMail() {}
@@ -16,7 +15,7 @@ class MailVerificationScreen extends StatelessWidget {
 
     final args =
         ModalRoute.of(context)!.settings.arguments as MailVerificationScreenArg;
-    final email = args.email;
+    final Widget screenText = args.screenText;
     final Widget pageContents = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -30,31 +29,8 @@ class MailVerificationScreen extends StatelessWidget {
         const SizedBox(
           height: 19,
         ),
-        Text('Email Verification',
-            style: Theme.of(context).textTheme.titleMedium!
-            // .copyWith(fontSize: 26, fontWeight: FontWeight.w900),
-            ),
-        Container(
-            width: 300,
-            margin: const EdgeInsets.only(top: 12, bottom: 15),
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: 'Please click on the link we just sent ',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(height: 1.5),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: email,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.w500, color: Colors.black),
-                  ),
-                  const TextSpan(text: ' to verify your account!'),
-                ],
-              ),
-            )),
+        screenText,
+
         const SizedBox(
           height: 30,
         ),

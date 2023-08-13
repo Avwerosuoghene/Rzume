@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class StartMessage {
@@ -15,8 +13,8 @@ class StartMessage {
   final String image;
 }
 
-class CustomForm {
-  CustomForm({
+class ICustomFormField {
+  ICustomFormField({
     required this.formHint,
     required this.formLabel,
     required this.formPreficIcon,
@@ -33,13 +31,6 @@ class CustomForm {
   final String? Function(String? value) validatorLogic;
 
   String enteredValue = "";
-
-  // String get enteredValue => _enteredValue;
-
-  // // Setter
-  // set enteredValue(String value) {
-  //   _enteredValue = value;
-  // }
 
   enteredInputSet(value) {
     enteredValue = value!;

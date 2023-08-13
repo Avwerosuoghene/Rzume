@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:rzume/model/enums.dart';
 import 'package:rzume/ui/cus_outline-button.dart';
 import 'package:rzume/widgets/auth-page-layout.dart';
 
+import '../../../widgets/custom-form.dart';
+
 class SigninScreen extends StatelessWidget {
-  SigninScreen({super.key});
+  const SigninScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    linkediSigninClicked() {}
+    linkedInSignin() {}
 
-    googleSigninClicked() {}
+    googleSignin() {}
 
-    signupButtonClicked() {
+    signup() {
       Navigator.pushNamed(context, '/signup');
+    }
+
+    resetPass() {
+      Navigator.pushNamed(context, '/reset-password');
     }
 
     final Widget pageContents = Column(children: [
@@ -28,11 +35,12 @@ class SigninScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ),
+    
       CusOutlineButton(
         color: const Color.fromRGBO(16, 96, 166, 1.0),
         icon: 'assets/icons/linkedin_logo.png',
         buttonText: 'Continue with LinkedIn',
-        onPressedFunction: linkediSigninClicked,
+        onPressedFunction: linkedInSignin,
       ),
       const SizedBox(
         height: 15,
@@ -41,21 +49,21 @@ class SigninScreen extends StatelessWidget {
         color: const Color.fromARGB(255, 3, 26, 46),
         icon: 'assets/icons/google_logo.png',
         buttonText: 'Continue with Google',
-        onPressedFunction: googleSigninClicked,
+        onPressedFunction: googleSignin,
       ),
       Container(
           margin: const EdgeInsets.only(top: 15, bottom: 25),
           child: const Text(
             'Or login with your email',
           )),
-      // SigninForm(),
+      const CustomForm(formType: FormType.signin, submitBtnText: 'Login'),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text('forgotten your password?'),
           TextButton(
             style: TextButton.styleFrom(),
-            onPressed: () {},
+            onPressed: resetPass,
             child: Text(
               'Reset password',
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -71,14 +79,13 @@ class SigninScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Don’t have an account? '),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('or'),
+            const Text('Don’t have an account? '),
             TextButton(
               style: TextButton.styleFrom(),
-              onPressed: signupButtonClicked,
+              onPressed: signup,
               child: Text(
                 'Sign up',
                 textAlign: TextAlign.center,
@@ -94,6 +101,7 @@ class SigninScreen extends StatelessWidget {
 
     return AuthPageLayout(
       pageContent: pageContents,
+      footerText: footerText,
     );
   }
 }
