@@ -20,7 +20,7 @@ class CusFilledButton extends StatelessWidget {
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
+            borderRadius: BorderRadius.circular(41),
           )),
           backgroundColor: MaterialStateProperty.all<Color>(
               Theme.of(context).colorScheme.primary),

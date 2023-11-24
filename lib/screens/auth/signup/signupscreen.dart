@@ -5,8 +5,27 @@ import 'package:rzume/widgets/auth-page-layout.dart';
 import '../../../ui/cus_outline-button.dart';
 import '../../../widgets/custom-form.dart';
 
-class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  @override
+  void initState() {
+    super.initState();
+    showErrorMessage();
+  }
+
+  Future<void> showErrorMessage() async {
+    await Future.delayed(Duration(seconds: 2), () {
+      errorMessage = 'Error';
+    });
+  }
+
+  String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +72,17 @@ class SignUpScreen extends StatelessWidget {
           child: const Text(
             'Or sign up with your email',
           )),
-      const CustomForm(
-          formType: FormType.signup, submitBtnText: 'Sign up with email'),
+      FutureBuilder<void>(
+        future: showErrorMessage(),
+        builder: (context, snapshot) {
+          return CustomForm(
+            key: UniqueKey(), // Use UniqueKey to force widget rebuild
+            formType: FormType.signup,
+            submitBtnText: 'Sign up with email',
+            errorMessage: errorMessage,
+          );
+        },
+      ),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

@@ -51,7 +51,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
         onChanged: widget.onChangeEvent,
         decoration: InputDecoration(
             hintText: widget.formHint,
-            border: const OutlineInputBorder(),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             label: Text(
               widget.formLabel,
               style: const TextStyle(

@@ -9,10 +9,14 @@ import '../ui/custom_form_field.dart';
 
 class CustomForm extends StatefulWidget {
   const CustomForm(
-      {super.key, required this.formType, required this.submitBtnText});
+      {super.key,
+      required this.formType,
+      required this.submitBtnText,
+      this.errorMessage});
 
   final FormType formType;
   final String submitBtnText;
+  final String? errorMessage;
 
   @override
   State<CustomForm> createState() {
@@ -131,6 +135,7 @@ class _CustomFormState extends State<CustomForm> {
       key: _form,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ...buildFormFields(),
           if (widget.formType == FormType.signup)
@@ -157,10 +162,24 @@ class _CustomFormState extends State<CustomForm> {
                         .copyWith(fontSize: 14))
               ],
             ),
+
+          if (widget.errorMessage != null)
+            Center(
+              // margin: const EdgeInsets.only(top: 10),
+              child: Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 5),
+                child: Text(
+                  widget.errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+            ),
+
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             // child: SizedBox(
             //   width: double.infinity,
+
             child: CusFilledButton(
               buttonWidth: double.infinity,
               buttonText: widget.submitBtnText,

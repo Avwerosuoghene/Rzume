@@ -6,9 +6,9 @@ import 'package:rzume/screens/auth/signup/signupscreen.dart';
 import 'package:rzume/screens/auth/signup/verifiedscreen.dart';
 
 Map<String, Widget Function(BuildContext)> authRoutes = {
-  '/signup': (context) => const SignUpScreen(),
+  '/signup': (context) => SignUpScreen(),
   '/verified': (context) => const VerifiedScreen(),
   '/signin': (context) => const SigninScreen(),
   '/reset-password': (context) => const PasswordResetScreen(),
-    '/create-password': (context) => const CreatePasswordScreen()
+  '/create-password': (context) => const CreatePasswordScreen()
 };

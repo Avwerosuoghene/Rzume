@@ -22,7 +22,7 @@ class CusOutlineButton extends StatelessWidget {
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
+            borderRadius: BorderRadius.circular(41),
           )),
           side: MaterialStateProperty.all(
             BorderSide(color: color, width: 2.0, style: BorderStyle.solid),
