@@ -66,10 +66,12 @@ flutter:
     - assets/icons/rzume_logo_dark.png
     - assets/icons/google_logo.png
     - assets/icons/linkedin_logo.png
+    - assets/icons/check.png
     - assets/icons/email.png
     - assets/icons/password.png
     - assets/icons/circle_email.png
     - assets/icons/verified_email.png
+    - assets/icons/loader_img.png
     - assets/images/organized.png
     - assets/images/target.png
 

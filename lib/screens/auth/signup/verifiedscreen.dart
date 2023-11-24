@@ -45,6 +45,7 @@ class VerifiedScreen extends StatelessWidget {
 
     return AuthPageLayout(
       pageContent: pageContents,
+      showBacknav: false,
     );
   }
 }

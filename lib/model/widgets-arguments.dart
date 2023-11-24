@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class MailVerificationScreenArg {
+class OtpVerificationScreenArg {
   // final String email;
   final Widget screenText;
 
-  MailVerificationScreenArg({required this.screenText});
+  OtpVerificationScreenArg({required this.screenText});
 }

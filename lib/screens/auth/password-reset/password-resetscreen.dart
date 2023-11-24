@@ -6,7 +6,7 @@ import 'package:rzume/ui/cus-filled-button.dart';
 import 'package:rzume/ui/custom_form_field.dart';
 import 'package:rzume/widgets/auth-page-layout.dart';
 
-final ICustomFormField emailFormData = formData[0];
+final ICustomFormField emailFormData = formData.email;
 
 class PasswordResetScreen extends StatelessWidget {
   const PasswordResetScreen({super.key});
@@ -15,6 +15,13 @@ class PasswordResetScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _form = GlobalKey<FormState>();
     var _enteredEmail = '';
+
+    String? emailValidator(String? value) {
+      if (value == null || value.trim().isEmpty || !value.contains('@')) {
+        return 'Please enter a valid email address';
+      }
+      return null;
+    }
 
     void submitForm() {
       final isValid = _form.currentState!.validate();
@@ -39,8 +46,8 @@ class PasswordResetScreen extends StatelessWidget {
         ],
       );
 
-      Navigator.pushNamed(context, '/mail-verification',
-          arguments: MailVerificationScreenArg(screenText: emailScreenText));
+      Navigator.pushNamed(context, '/otp-verification',
+          arguments: OtpVerificationScreenArg(screenText: emailScreenText));
     }
 
     final Widget pageContents = Column(
@@ -62,14 +69,16 @@ class PasswordResetScreen extends StatelessWidget {
           key: _form,
           autovalidateMode: AutovalidateMode.always,
           child: CustomFormField(
-            formHint: emailFormData.formHint,
-            formLabel: emailFormData.formLabel,
-            formPreficIcon: emailFormData.formPreficIcon,
-            inputValue: emailFormData.enteredInputSet,
-            showSuffixIcon: emailFormData.showSuffixIcon,
-            validatorFunction: emailFormData.validatorLogic,
-            keyboardType: emailFormData.keyboardType,
-          ),
+              formHint: emailFormData.formHint,
+              formLabel: emailFormData.formLabel,
+              formPreficIcon: emailFormData.formPreficIcon,
+              inputValue: emailFormData.enteredInputSet,
+              showSuffixIcon: emailFormData.showSuffixIcon,
+              validatorFunction: emailValidator,
+              keyboardType: emailFormData.keyboardType,
+              onChangeEvent: (value) {
+                emailFormData.enteredValue = value;
+              }),
         ),
         const SizedBox(
           height: 40,
@@ -81,6 +90,7 @@ class PasswordResetScreen extends StatelessWidget {
         ),
       ],
     );
+
     return AuthPageLayout(pageContent: pageContents);
   }
 }

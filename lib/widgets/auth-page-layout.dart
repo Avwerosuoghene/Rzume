@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AuthPageLayout extends StatelessWidget {
-  const AuthPageLayout({super.key, required this.pageContent, this.footerText});
+  const AuthPageLayout(
+      {super.key,
+      required this.pageContent,
+      this.footerText,
+      this.showBacknav = true});
 
   final Widget pageContent;
   final Widget? footerText;
+  final bool showBacknav;
 
   @override
   Widget build(BuildContext context) {
@@ -13,15 +18,18 @@ class AuthPageLayout extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Color.fromRGBO(0, 0, 0, 0.70),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        automaticallyImplyLeading: false,
+        leading: showBacknav
+            ? IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Color.fromRGBO(0, 0, 0, 0.70),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            : null,
       ),
       body: SingleChildScrollView(
         child: Container(

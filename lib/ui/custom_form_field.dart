@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class CustomFormField extends StatefulWidget {
-  CustomFormField({
-    super.key,
-    required this.formHint,
-    required this.formLabel,
-    required this.formPreficIcon,
-    required this.validatorFunction,
-    required this.inputValue,
-    TextInputType? keyboardType,
-    required this.showSuffixIcon,
-  }) : keyboardType = keyboardType ?? TextInputType.text;
+  CustomFormField(
+      {super.key,
+      required this.formHint,
+      required this.formLabel,
+      required this.formPreficIcon,
+      required this.validatorFunction,
+      required this.inputValue,
+      TextInputType? keyboardType,
+      required this.showSuffixIcon,
+      required this.onChangeEvent})
+      : keyboardType = keyboardType ?? TextInputType.text;
 
   final String formHint;
   final String formLabel;
@@ -19,6 +20,7 @@ class CustomFormField extends StatefulWidget {
   final TextInputType? keyboardType;
   final void Function(String? value) inputValue;
   final bool showSuffixIcon;
+  final void Function(String value) onChangeEvent;
 
   @override
   State<CustomFormField> createState() {
@@ -27,11 +29,18 @@ class CustomFormField extends StatefulWidget {
 }
 
 class _CustomFormFieldState extends State<CustomFormField> {
-  bool hideText = false;
+  late bool hideText;
+
+  @override
+  void initState() {
+    super.initState();
+    hideText = widget.showSuffixIcon;
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         style: Theme.of(context)
             .textTheme
             .bodyMedium!
@@ -39,6 +48,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
         keyboardType: widget.keyboardType,
         textCapitalization: TextCapitalization.none,
         autocorrect: false,
+        onChanged: widget.onChangeEvent,
         decoration: InputDecoration(
             hintText: widget.formHint,
             border: const OutlineInputBorder(),
@@ -71,7 +81,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   )
                 : null),
         validator: widget.validatorFunction,
-        onSaved: widget.inputValue,
+        // onSaved: widget.inputValue,
         obscureText: hideText);
   }
 }

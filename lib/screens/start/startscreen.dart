@@ -3,6 +3,7 @@ import 'package:rzume/ui/cus-filled-button.dart';
 import '../../model/data.dart';
 import '../../ui/progress-bar.dart';
 import '../../widgets/horizontal-list.dart';
+import '../../widgets/loader.dart';
 import '../../widgets/start-screen-message.dart';
 
 class StartScreen extends StatefulWidget {
@@ -34,6 +35,19 @@ class _StartScreenState extends State<StartScreen> {
     }
 
     void navigateToAuthScreen() {
+      // showDialog<String>(
+      //     barrierDismissible: false,
+      //     context: context,
+      //     builder: (BuildContext context) {
+      //       return Container(
+      //         color: const Color.fromARGB(133, 0, 0, 0),
+      //         child: CustomLoader(),
+      //       );
+
+      //       // width: 20,
+      //       // height: 20,
+      //     });
+
       Navigator.pushNamed(context, '/signup');
     }
 

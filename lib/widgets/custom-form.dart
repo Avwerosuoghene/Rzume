@@ -26,11 +26,23 @@ class _CustomFormState extends State<CustomForm> {
   var _enteredEmail = '';
   var _enteredPassword = '';
   bool isRememberMeChecked = false;
-  final List<ICustomFormField> signupFormFields = formData;
+  final List<ICustomFormField> signupFormFields = [
+    formData.email,
+    formData.password
+  ];
+
+  late String? Function(String? value) validator;
 
   String? passwordValidator(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your password';
+    }
+    return null;
+  }
+
+  String? emailValidator(String? value) {
+    if (value == null || value.trim().isEmpty || !value.contains('@')) {
+      return 'Please enter a valid email address';
     }
     return null;
   }
@@ -48,15 +60,14 @@ class _CustomFormState extends State<CustomForm> {
 
     final Widget emailScreenText = Column(
       children: [
-        Text("Email Verification Sent",
-            style: Theme.of(context).textTheme.titleMedium!),
+        Text("Verify Email", style: Theme.of(context).textTheme.titleMedium!),
         Container(
             width: 300,
             margin: const EdgeInsets.only(top: 12, bottom: 15),
             child: RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                text: 'Please click on the link we just sent ',
+                text: 'Please enter the otp sent to your mail ',
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium!
@@ -75,17 +86,21 @@ class _CustomFormState extends State<CustomForm> {
     );
 
     if (widget.formType == FormType.signup) {
-      Navigator.pushNamed(context, '/mail-verification',
-          arguments: MailVerificationScreenArg(screenText: emailScreenText));
+      Navigator.pushNamed(context, '/otp-verification',
+          arguments: OtpVerificationScreenArg(screenText: emailScreenText));
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final List<Widget> signupFormFieldWidgets =
-        signupFormFields.map((formItem) {
+  List<Widget> buildFormFields() {
+    return signupFormFields.map((formItem) {
       bool isLast = formItem.formHint ==
           signupFormFields[signupFormFields.length - 1].formHint;
+
+      if (formItem.formLabel == 'Password') {
+        validator = passwordValidator;
+      } else {
+        validator = emailValidator;
+      }
 
       return Column(
         children: [
@@ -95,8 +110,9 @@ class _CustomFormState extends State<CustomForm> {
             formPreficIcon: formItem.formPreficIcon,
             inputValue: formItem.enteredInputSet,
             showSuffixIcon: formItem.showSuffixIcon,
-            validatorFunction: formItem.validatorLogic,
+            validatorFunction: validator,
             keyboardType: formItem.keyboardType,
+            onChangeEvent: (value) {},
           ),
           if (!isLast)
             const SizedBox(
@@ -105,14 +121,18 @@ class _CustomFormState extends State<CustomForm> {
         ],
       );
     }).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // signupFormFieldWidgets =
 
     return Form(
       key: _form,
-      autovalidateMode: AutovalidateMode.always,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          ...signupFormFieldWidgets,
+          ...buildFormFields(),
           if (widget.formType == FormType.signup)
             Row(
               children: [

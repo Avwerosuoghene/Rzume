@@ -15,7 +15,8 @@ class SignUpScreen extends StatelessWidget {
     googleSignup() {}
 
     signIn() {
-      Navigator.pushNamed(context, '/signin');
+      // Navigator.pushNamed(context, '/signin');
+      Navigator.pushNamed(context, '/create-password');
     }
 
     final Widget pageContents = Column(children: [
@@ -52,7 +53,8 @@ class SignUpScreen extends StatelessWidget {
           child: const Text(
             'Or sign up with your email',
           )),
-      const CustomForm(formType: FormType.signup,      submitBtnText: 'Sign up with email' ),
+      const CustomForm(
+          formType: FormType.signup, submitBtnText: 'Sign up with email'),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

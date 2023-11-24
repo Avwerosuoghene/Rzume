@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'misc-type.dart';
 
-
 List<StartMessage> screenData = [
   StartMessage(
     image: 'assets/images/organized.png',
@@ -18,31 +17,40 @@ List<StartMessage> screenData = [
   )
 ];
 
-List<ICustomFormField> formData = [
-  ICustomFormField(
+ICustomFormTypes formData = ICustomFormTypes(
+  email: ICustomFormField(
     formHint: 'Enter email',
     formLabel: 'Email',
     formPreficIcon: 'assets/icons/email.png',
     showSuffixIcon: false,
-    validatorLogic: (value) {
-      if (value == null || value.trim().isEmpty || !value.contains('@')) {
-        return 'Please enter a valid email address';
-      }
-      return null;
-    },
     keyboardType: TextInputType.emailAddress,
   ),
-  ICustomFormField(
+  password: ICustomFormField(
     formHint: 'Enter password',
     formLabel: 'Password',
     formPreficIcon: 'assets/icons/password.png',
     showSuffixIcon: true,
-    validatorLogic: (value) {
-      if (value == null || value.isEmpty) {
-        return 'Please enter your password';
-      }
-      return null;
-    },
     keyboardType: TextInputType.visiblePassword,
   ),
-];
+  confirmPassword: ICustomFormField(
+    formHint: 'Enter password again',
+    formLabel: 'Confirm Password',
+    formPreficIcon: 'assets/icons/password.png',
+    showSuffixIcon: true,
+    keyboardType: TextInputType.visiblePassword,
+  ),
+  defaultPass: ICustomFormField(
+    formHint: 'Enter default password',
+    formLabel: 'Default Password',
+    formPreficIcon: 'assets/icons/password.png',
+    showSuffixIcon: true,
+    keyboardType: TextInputType.emailAddress,
+  ),
+  otpInput: ICustomFormField(
+    formHint: '0',
+    formLabel: '',
+    formPreficIcon: '',
+    showSuffixIcon: false,
+    keyboardType: TextInputType.number,
+  ),
+);

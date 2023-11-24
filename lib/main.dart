@@ -5,7 +5,7 @@ import 'package:rzume/screens/auth/signup/signupscreen.dart';
 
 import 'package:rzume/screens/start/splash.dart';
 import 'package:rzume/screens/start/startscreen.dart';
-import 'package:rzume/screens/utility/mail-verificationscreen.dart';
+import 'package:rzume/screens/utility/otp-verificationscreen.dart';
 import 'package:rzume/widgets/start-control.dart';
 import 'package:rzume/widgets/theme.dart';
 
