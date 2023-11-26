@@ -46,7 +46,7 @@ class _CustomLoaderState extends State<CustomLoader>
       child: Center(
         child: FadeTransition(
           opacity: _animation,
-          child: Container(
+          child: SizedBox(
             width: 180,
             height: 180,
             child: Image.asset(

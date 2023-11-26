@@ -25,7 +25,10 @@ class CusOutlineButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(41),
           )),
           side: MaterialStateProperty.all(
-            BorderSide(color: color, width: 2.0, style: BorderStyle.solid),
+            const BorderSide(
+                color: Color.fromARGB(108, 165, 165, 165),
+                width: 1.0,
+                style: BorderStyle.solid),
           ),
         ),
         child: SizedBox(

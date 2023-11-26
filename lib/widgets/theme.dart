@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
-  seedColor: const Color.fromARGB(255, 58, 177, 229),
-  primary: const Color.fromRGBO(44, 135, 190, 1),
-  secondary: const Color.fromRGBO(16, 96, 166, 1.0),
-  tertiary: const Color.fromARGB(255, 22, 78, 130),
-);
+    seedColor: const Color.fromARGB(255, 58, 177, 229),
+    primary: const Color.fromRGBO(44, 135, 190, 1),
+    secondary: const Color.fromRGBO(16, 96, 166, 1.0),
+    tertiary: const Color.fromARGB(255, 22, 78, 130),
+    onBackground: Color.fromARGB(255, 245, 245, 245));
 
 var kDarkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,

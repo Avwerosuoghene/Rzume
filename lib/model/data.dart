@@ -46,11 +46,39 @@ ICustomFormTypes formData = ICustomFormTypes(
     showSuffixIcon: true,
     keyboardType: TextInputType.emailAddress,
   ),
-  otpInput: ICustomFormField(
+  otpInputVal1: ICustomFormField(
     formHint: '0',
     formLabel: '',
     formPreficIcon: '',
     showSuffixIcon: false,
     keyboardType: TextInputType.number,
+  ),
+  otpInputVal2: ICustomFormField(
+    formHint: '0',
+    formLabel: '',
+    formPreficIcon: '',
+    showSuffixIcon: false,
+    keyboardType: TextInputType.number,
+  ),
+  otpInputVal3: ICustomFormField(
+    formHint: '0',
+    formLabel: '',
+    formPreficIcon: '',
+    showSuffixIcon: false,
+    keyboardType: TextInputType.number,
+  ),
+  otpInputVal4: ICustomFormField(
+    formHint: '0',
+    formLabel: '',
+    formPreficIcon: '',
+    showSuffixIcon: false,
+    keyboardType: TextInputType.number,
+  ),
+  search: ICustomFormField(
+    formHint: 'Search',
+    formLabel: '',
+    formPreficIcon: 'assets/icons/search.png',
+    showSuffixIcon: false,
+    keyboardType: TextInputType.text,
   ),
 );

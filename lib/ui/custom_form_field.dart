@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../model/enums.dart';
+
 class CustomFormField extends StatefulWidget {
   CustomFormField(
       {super.key,
@@ -10,7 +12,9 @@ class CustomFormField extends StatefulWidget {
       required this.inputValue,
       TextInputType? keyboardType,
       required this.showSuffixIcon,
-      required this.onChangeEvent})
+      required this.onChangeEvent,
+      this.roundnessDegree = Roundness.partial,
+      this.showValidator = true})
       : keyboardType = keyboardType ?? TextInputType.text;
 
   final String formHint;
@@ -21,6 +25,8 @@ class CustomFormField extends StatefulWidget {
   final void Function(String? value) inputValue;
   final bool showSuffixIcon;
   final void Function(String value) onChangeEvent;
+  final Roundness? roundnessDegree;
+  final bool? showValidator;
 
   @override
   State<CustomFormField> createState() {
@@ -39,6 +45,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
 
   @override
   Widget build(BuildContext context) {
+    final roundness = widget.roundnessDegree!.value;
     return TextFormField(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         style: Theme.of(context)
@@ -50,9 +57,19 @@ class _CustomFormFieldState extends State<CustomFormField> {
         autocorrect: false,
         onChanged: widget.onChangeEvent,
         decoration: InputDecoration(
+            fillColor: Colors.white,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(roundness)),
+              borderSide: const BorderSide(
+                color: Color.fromARGB(
+                    108, 165, 165, 165), // Set your desired border color here
+                width: 1.0, // Set the width of the border
+              ),
+            ),
+            filled: true,
             hintText: widget.formHint,
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(roundness)),
             label: Text(
               widget.formLabel,
               style: const TextStyle(
@@ -60,10 +77,14 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   fontSize: 12,
                   fontWeight: FontWeight.w200),
             ),
-            prefixIcon: SizedBox(
-              // width: 200,
+            prefixIconConstraints:
+                const BoxConstraints(minHeight: 0, minWidth: 0),
+            prefixIcon: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              height: 30,
               child: Image.asset(
                 widget.formPreficIcon,
+                height: 10,
               ),
             ),
             suffixIcon: widget.showSuffixIcon
@@ -81,7 +102,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
                     },
                   )
                 : null),
-        validator: widget.validatorFunction,
+        validator:
+            widget.showValidator == true ? widget.validatorFunction : null,
         // onSaved: widget.inputValue,
         obscureText: hideText);
   }

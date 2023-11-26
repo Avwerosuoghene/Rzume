@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rzume/model/widgets-arguments.dart';
@@ -20,7 +18,12 @@ class OtpVerificationScreen extends StatefulWidget {
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
-  final List<ICustomFormField> verificationFormFields = [];
+  final List<ICustomFormField> verificationFormFields = [
+    formData.otpInputVal1,
+    formData.otpInputVal2,
+    formData.otpInputVal3,
+    formData.otpInputVal4
+  ];
 
   final CounterModel _counter = CounterModel();
 
@@ -28,9 +31,9 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void initState() {
     super.initState();
 
-    for (var i = 1; i < 5; i++) {
-      verificationFormFields.add(formData.otpInput);
-    }
+    // for (var i = 1; i < 5; i++) {
+    //   verificationFormFields.add(formData.otpInput);
+    // }
 
     _counter.startTimer();
   }
@@ -42,7 +45,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   void otpConfirmation() {
     _counter.stopTimer();
-    // Navigator.pushNamed(context, '/verified');
+    _form.currentState!
+        .save(); // This triggers the onSaved callback for each field
+
+    // Now you can access the values entered in the form
+    // For example:
+    print('her');
+    print(verificationFormFields[1]
+        .enteredValue); // Navigator.pushNamed(context, '/verified');
 
     // void navigateToAuthScreen() {
     //   showDialog<String>(

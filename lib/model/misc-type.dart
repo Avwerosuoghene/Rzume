@@ -38,18 +38,25 @@ class ICustomFormField {
 }
 
 class ICustomFormTypes {
-  ICustomFormTypes({
-    required this.email,
-    required this.password,
-    required this.confirmPassword,
-    required this.defaultPass,
-    required this.otpInput,
-  });
+  ICustomFormTypes(
+      {required this.email,
+      required this.password,
+      required this.confirmPassword,
+      required this.defaultPass,
+      required this.otpInputVal1,
+      required this.otpInputVal2,
+      required this.otpInputVal3,
+      required this.otpInputVal4,
+      required this.search});
   final ICustomFormField email;
   final ICustomFormField password;
   final ICustomFormField confirmPassword;
   final ICustomFormField defaultPass;
-  final ICustomFormField otpInput;
+  final ICustomFormField otpInputVal1;
+  final ICustomFormField otpInputVal2;
+  final ICustomFormField otpInputVal3;
+  final ICustomFormField otpInputVal4;
+  final ICustomFormField search;
 }
 
 class ITimer {

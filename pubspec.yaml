@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^5.1.0
   animations: ^2.0.7
+  provider:
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,8 @@ flutter:
     - assets/icons/circle_email.png
     - assets/icons/verified_email.png
     - assets/icons/loader_img.png
+    - assets/icons/search.png
+    - assets/icons/bell.png
     - assets/images/organized.png
     - assets/images/target.png
 

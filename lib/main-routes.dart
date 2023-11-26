@@ -1,4 +1,5 @@
 import 'package:rzume/screens/auth/auth-routes.dart';
+import 'package:rzume/screens/home/homepagescreen.dart';
 import 'package:rzume/screens/start/splash.dart';
 import 'package:rzume/screens/start/startscreen.dart';
 import 'package:rzume/screens/utility/otp-verificationscreen.dart';
@@ -10,4 +11,5 @@ final routes = {
   '/start': (context) => const StartScreen(),
   ...authRoutes,
   '/otp-verification': (context) => const OtpVerificationScreen(),
+  '/home': (context) => const HomePageScreen()
 };
