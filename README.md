@@ -3,7 +3,7 @@
 
 ## Overview
 
-Welcome to the frontend of the Rzume Application. This application is designed to provide a seamless user experience through various screens, including Splash, Start, Home, OTP Verification, Signup, Signin, Reset Password, and Create Password screens.
+Welcome to the frontend of the Rzume Application. Rzume is a comprehensive job tracking application designed to streamline the job application process for users. It empowers individuals to efficiently manage and organize information related to their job applications. The application offers a user-friendly interface and a set of features to enhance the job hunting experience. This application is designed to provide a seamless user experience through various screens, including Splash, Start, Home, OTP Verification, Signup, Signin, Reset Password, and Create Password screens.
 
 ## Screens
 
