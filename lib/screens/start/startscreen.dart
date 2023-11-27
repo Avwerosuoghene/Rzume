@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rzume/ui/cus-filled-button.dart';
+import 'package:rzume/ui/cus_filled_button.dart';
 import '../../model/data.dart';
-import '../../ui/progress-bar.dart';
+import '../../ui/progress_bar.dart';
 import '../../widgets/horizontal-list.dart';
 import '../../widgets/loader.dart';
-import '../../widgets/start-screen-message.dart';
+import '../../widgets/start_screen_message.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});

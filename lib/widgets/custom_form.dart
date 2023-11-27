@@ -3,7 +3,7 @@ import 'package:rzume/model/data.dart';
 import 'package:rzume/model/enums.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/widgets-arguments.dart';
-import 'package:rzume/ui/cus-filled-button.dart';
+import 'package:rzume/ui/cus_filled_button.dart';
 
 import '../ui/custom_form_field.dart';
 

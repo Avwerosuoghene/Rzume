@@ -54,6 +54,12 @@ class _BellIcon extends State<BellIcon> with TickerProviderStateMixin {
     bellNotifier();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
   bellNotifier() {
     counter = 5;
 

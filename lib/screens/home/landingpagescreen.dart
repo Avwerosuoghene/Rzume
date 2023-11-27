@@ -7,16 +7,16 @@ import '../../ui/custom_form_field.dart';
 import '../../widgets/bell_icon.dart';
 import '../../widgets/favorite_button.dart';
 
-class HomePageScreen extends StatefulWidget {
-  const HomePageScreen({super.key});
+class LandingPageScreen extends StatefulWidget {
+  const LandingPageScreen({super.key});
 
   @override
-  State<HomePageScreen> createState() {
-    return _HomePageScreen();
+  State<LandingPageScreen> createState() {
+    return _LandingPageScreen();
   }
 }
 
-class _HomePageScreen extends State<HomePageScreen>
+class _LandingPageScreen extends State<LandingPageScreen>
     with TickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     duration: const Duration(seconds: 5),

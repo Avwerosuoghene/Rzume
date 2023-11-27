@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rzume/model/data.dart';
-import 'package:rzume/ui/cus-filled-button.dart';
+import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/ui/custom_form_field.dart';
-import 'package:rzume/ui/success-dialog.dart';
+import 'package:rzume/ui/success_dialog.dart';
 import 'package:rzume/widgets/auth-page-layout.dart';
 
 import '../../../model/misc-type.dart';

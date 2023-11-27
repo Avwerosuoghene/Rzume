@@ -31,7 +31,6 @@ class _FavoriteButton extends State<FavoriteButton>
   }
 
   @override
-  @override
   void dispose() {
     super.dispose();
     _controller.dispose();

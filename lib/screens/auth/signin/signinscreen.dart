@@ -3,7 +3,7 @@ import 'package:rzume/model/enums.dart';
 import 'package:rzume/ui/cus_outline-button.dart';
 import 'package:rzume/widgets/auth-page-layout.dart';
 
-import '../../../widgets/custom-form.dart';
+import '../../../widgets/custom_form.dart';
 
 class SigninScreen extends StatelessWidget {
   const SigninScreen({super.key});

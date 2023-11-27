@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rzume/model/widgets-arguments.dart';
-import 'package:rzume/ui/cus-filled-button.dart';
+import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/widgets/auth-page-layout.dart';
 
 import '../../model/data.dart';
 import '../../model/misc-type.dart';
-import '../../widgets/counter-notifier.dart';
+import '../../widgets/counter_notifier.dart';
 import '../../widgets/loader.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
@@ -54,21 +54,22 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     print(verificationFormFields[1]
         .enteredValue); // Navigator.pushNamed(context, '/verified');
 
-    // void navigateToAuthScreen() {
-    //   showDialog<String>(
-    //       barrierDismissible: false,
-    //       context: context,
-    //       builder: (BuildContext context) {
-    //         return Container(
-    //           color: const Color.fromARGB(133, 0, 0, 0),
-    //           child: CustomLoader(),
-    //         );
-    //       });
-    // }
+    navigateToAuthScreen();
+    Future.delayed(Duration(seconds: 10), () {
+      Navigator.pop(context);
+    });
+  }
 
-    // Future.delayed(Duration(seconds: 3), () {
-    //   Navigator.pop(context);
-    // });
+  void navigateToAuthScreen() {
+    showDialog<String>(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            color: const Color.fromARGB(133, 0, 0, 0),
+            child: CustomLoader(),
+          );
+        });
   }
 
   void resendOtpConfirmation() {
