@@ -7,7 +7,7 @@ import 'package:rzume/widgets/auth-page-layout.dart';
 import '../../model/data.dart';
 import '../../model/misc-type.dart';
 import '../../widgets/counter_notifier.dart';
-import '../../widgets/loader.dart';
+import '../../ui/loader.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   const OtpVerificationScreen({super.key});

@@ -3,7 +3,7 @@ import 'package:rzume/ui/cus_filled_button.dart';
 import '../../model/data.dart';
 import '../../ui/progress_bar.dart';
 import '../../widgets/horizontal-list.dart';
-import '../../widgets/loader.dart';
+import '../../ui/loader.dart';
 import '../../widgets/start_screen_message.dart';
 
 class StartScreen extends StatefulWidget {
@@ -48,7 +48,7 @@ class _StartScreenState extends State<StartScreen> {
       //       // height: 20,
       //     });
 
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushNamed(context, '/signup');
     }
 
     scrollController.addListener(scrollListener);

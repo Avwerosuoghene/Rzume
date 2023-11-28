@@ -4,8 +4,8 @@ import 'package:rzume/model/enums.dart';
 import '../../model/data.dart';
 import '../../model/misc-type.dart';
 import '../../ui/custom_form_field.dart';
-import '../../widgets/bell_icon.dart';
-import '../../widgets/favorite_button.dart';
+import '../../ui/bell_icon.dart';
+import '../../ui/favorite_button.dart';
 
 class LandingPageScreen extends StatefulWidget {
   const LandingPageScreen({super.key});
