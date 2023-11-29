@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rzume/model/enums.dart';
 import 'package:rzume/widgets/auth-page-layout.dart';
 
+import '../../../model/widgets-arguments.dart';
 import '../../../ui/cus_outline-button.dart';
 import '../../../widgets/custom_form.dart';
 
@@ -36,6 +37,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
     signIn() {
       // Navigator.pushNamed(context, '/signin');
       Navigator.pushNamed(context, '/create-password');
+    }
+
+    Future<void> signup(String email, String password) async {
+      final Widget emailScreenText = Column(
+        children: [
+          Text("Verify Email", style: Theme.of(context).textTheme.titleMedium!),
+          Container(
+              width: 300,
+              margin: const EdgeInsets.only(top: 12, bottom: 15),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'Please enter the otp sent to your mail ',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(height: 1.5),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: email,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500, color: Colors.black),
+                    ),
+                    const TextSpan(text: ' to verify your account!'),
+                  ],
+                ),
+              )),
+        ],
+      );
+
+      Navigator.pushNamed(context, '/otp-verification',
+          arguments: OtpVerificationScreenArg(screenText: emailScreenText));
     }
 
     final Widget pageContents = Column(children: [
@@ -80,6 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             formType: FormType.signup,
             submitBtnText: 'Sign up with email',
             errorMessage: errorMessage,
+            confirmFunction: signup,
           );
         },
       ),

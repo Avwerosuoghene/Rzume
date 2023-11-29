@@ -3,10 +3,26 @@ import 'package:rzume/model/enums.dart';
 import 'package:rzume/ui/cus_outline-button.dart';
 import 'package:rzume/widgets/auth-page-layout.dart';
 
+import '../../../model/request_payload.dart';
+import '../../../services/api_provider.dart';
+import '../../../services/api_service.dart';
 import '../../../widgets/custom_form.dart';
 
-class SigninScreen extends StatelessWidget {
+class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
+
+  @override
+  State<SigninScreen> createState() => _SigninScreenState();
+}
+
+class _SigninScreenState extends State<SigninScreen> {
+  final APIService apiService = APIService();
+
+  Future<void> signin(String email, String password) async {
+    final payload = LoginRequest(username: 'test', password: 'test');
+    await apiService.sendRequest(
+        httpFunction: APIProvider.login, payload: payload.toJson());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +51,6 @@ class SigninScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ),
-    
       CusOutlineButton(
         color: const Color.fromRGBO(16, 96, 166, 1.0),
         icon: 'assets/icons/linkedin_logo.png',
@@ -56,7 +71,11 @@ class SigninScreen extends StatelessWidget {
           child: const Text(
             'Or login with your email',
           )),
-      const CustomForm(formType: FormType.signin, submitBtnText: 'Login'),
+      CustomForm(
+        formType: FormType.signin,
+        submitBtnText: 'Login',
+        confirmFunction: signin,
+      ),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

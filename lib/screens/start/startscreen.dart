@@ -48,7 +48,7 @@ class _StartScreenState extends State<StartScreen> {
       //       // height: 20,
       //     });
 
-      Navigator.pushNamed(context, '/signup');
+      Navigator.pushNamed(context, '/signin');
     }
 
     scrollController.addListener(scrollListener);

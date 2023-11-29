@@ -104,7 +104,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                 : null),
         validator:
             widget.showValidator == true ? widget.validatorFunction : null,
-        // onSaved: widget.inputValue,
+        onSaved: widget.inputValue,
         obscureText: hideText);
   }
 }

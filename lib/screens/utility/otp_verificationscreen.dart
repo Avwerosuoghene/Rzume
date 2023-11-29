@@ -50,7 +50,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
     // Now you can access the values entered in the form
     // For example:
-    print('her');
     print(verificationFormFields[1]
         .enteredValue); // Navigator.pushNamed(context, '/verified');
 

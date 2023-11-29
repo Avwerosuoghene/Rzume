@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rzume/config/environment.dart';
 
 class MainSubLayout extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _MainSubLayout extends State<MainSubLayout> {
         color: Colors.blue, // Set your desired background color
         child: Center(
           child: FilledButton(
-              onPressed: widget.toggleDrawer, child: Text('Activate')),
+              onPressed: widget.toggleDrawer, child: Text(Environment.apiUrl)),
         ));
   }
 }

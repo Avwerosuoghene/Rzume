@@ -12,11 +12,13 @@ class CustomForm extends StatefulWidget {
       {super.key,
       required this.formType,
       required this.submitBtnText,
-      this.errorMessage});
+      this.errorMessage,
+      required this.confirmFunction});
 
   final FormType formType;
   final String submitBtnText;
   final String? errorMessage;
+  final Future<void> Function(String email, String password) confirmFunction;
 
   @override
   State<CustomForm> createState() {
@@ -62,37 +64,11 @@ class _CustomFormState extends State<CustomForm> {
     _enteredEmail = signupFormFields[0].enteredValue;
     _enteredPassword = signupFormFields[1].enteredValue;
 
-    final Widget emailScreenText = Column(
-      children: [
-        Text("Verify Email", style: Theme.of(context).textTheme.titleMedium!),
-        Container(
-            width: 300,
-            margin: const EdgeInsets.only(top: 12, bottom: 15),
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: 'Please enter the otp sent to your mail ',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(height: 1.5),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: _enteredEmail,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.w500, color: Colors.black),
-                  ),
-                  const TextSpan(text: ' to verify your account!'),
-                ],
-              ),
-            )),
-      ],
-    );
+    widget.confirmFunction(_enteredEmail, _enteredPassword);
 
-    if (widget.formType == FormType.signup) {
-      Navigator.pushNamed(context, '/otp-verification',
-          arguments: OtpVerificationScreenArg(screenText: emailScreenText));
-    }
+    // if (widget.formType == FormType.signin) {
+    //   print('signin');
+    // }
   }
 
   List<Widget> buildFormFields() {
