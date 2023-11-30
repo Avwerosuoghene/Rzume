@@ -12,10 +12,16 @@ class APIService {
   }) async {
     final Object asyncResponse;
     if (payload != null) {
-      asyncResponse = await httpFunction(payload);
+      try {
+        asyncResponse = await httpFunction(payload);
+        return asyncResponse;
+      } catch (error) {
+        print(error);
+        return {};
+      }
     } else {
       asyncResponse = await httpFunction(null);
+      return asyncResponse;
     }
-    return asyncResponse;
   }
 }

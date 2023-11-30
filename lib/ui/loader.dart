@@ -22,10 +22,7 @@ class _CustomLoaderState extends State<CustomLoader>
     super.dispose();
   }
 
-  // late final Animation<double> _animation = CurvedAnimation(
-  //   parent: _controller,
-  //   curve: Curves.easeIn,
-  // );
+
 
   late final Animation<double> _animation = Tween<double>(
     begin: 0.5, // Start opacity from 0.2 instead of 0
