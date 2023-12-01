@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
 import '../../model/data.dart';
+import '../../model/widgets-arguments.dart';
 import '../../ui/progress_bar.dart';
+import '../../widgets/counter_notifier.dart';
 import '../../widgets/horizontal-list.dart';
 import '../../ui/loader.dart';
+import '../../widgets/misc_notifier.dart';
 import '../../widgets/start_screen_message.dart';
 
 class StartScreen extends StatefulWidget {
@@ -17,11 +21,26 @@ class _StartScreenState extends State<StartScreen> {
   int currentIndex = 0;
   late BuildContext myContext;
   ScrollController scrollController = ScrollController();
+  final MiscNotifer _miscNotifier = MiscNotifer();
+  final CounterNotifier _counter = CounterNotifier();
 
   @override
   void dispose() {
     scrollController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void navigateToAuthScreen() {
+    context.read<MiscNotifer>().triggerInfoDialog();
+    // await Future.delayed(const Duration(seconds: 5));
+    // _counter.startTimer();
+    // _miscNotifier.triggerInfoDialog();
+    Navigator.pushNamed(context, '/signup');
   }
 
   @override
@@ -32,23 +51,6 @@ class _StartScreenState extends State<StartScreen> {
       setState(() {
         currentIndex = scrollController.offset ~/ itemWidth;
       });
-    }
-
-    void navigateToAuthScreen() {
-      // showDialog<String>(
-      //     barrierDismissible: false,
-      //     context: context,
-      //     builder: (BuildContext context) {
-      //       return Container(
-      //         color: const Color.fromARGB(133, 0, 0, 0),
-      //         child: CustomLoader(),
-      //       );
-
-      //       // width: 20,
-      //       // height: 20,
-      //     });
-
-      Navigator.pushNamed(context, '/signin');
     }
 
     scrollController.addListener(scrollListener);

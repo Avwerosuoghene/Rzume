@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:rzume/model/enums.dart';
 import 'package:rzume/ui/cus_outline-button.dart';
 import 'package:rzume/widgets/auth-page-layout.dart';
@@ -6,6 +7,7 @@ import 'package:rzume/widgets/auth-page-layout.dart';
 import '../../../model/request_payload.dart';
 import '../../../services/api_provider.dart';
 import '../../../services/api_service.dart';
+import '../../../ui/loader.dart';
 import '../../../widgets/custom_form.dart';
 
 class SigninScreen extends StatefulWidget {
@@ -16,12 +18,34 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
+  final logger = Logger(
+      printer:
+          PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
   final APIService apiService = APIService();
 
   Future<void> signin(String email, String password) async {
-    final payload = LoginRequest(username: 'test', password: 'test');
-    await apiService.sendRequest(
+    final payload = LoginRequest(username: email, password: password);
+    showLoader();
+    final response = await apiService.sendRequest(
         httpFunction: APIProvider.login, payload: payload.toJson());
+    closeLoader();
+    logger.i(response);
+  }
+
+  void closeLoader() {
+    Navigator.pop(context);
+  }
+
+  showLoader() {
+    showDialog<String>(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            color: const Color.fromARGB(133, 0, 0, 0),
+            child: const CustomLoader(),
+          );
+        });
   }
 
   @override

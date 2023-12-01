@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-class LoginResponse {
-  LoginResponse(
+class ApiResponse {
+  ApiResponse(
       {required this.statusCode,
       required this.isSuccess,
       required this.errorMessages,
@@ -12,8 +12,8 @@ class LoginResponse {
   final List<dynamic> errorMessages;
   final Object? result;
 
-  factory LoginResponse.fromJson(Map<String, dynamic> parsedJson) {
-    return LoginResponse(
+  factory ApiResponse.fromJson(Map<String, dynamic> parsedJson) {
+    return ApiResponse(
       statusCode: parsedJson['statusCode'] as int,
       isSuccess: parsedJson['isSuccess'] as bool,
       errorMessages: parsedJson['errorMessages'] as List<dynamic>,

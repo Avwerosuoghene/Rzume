@@ -7,26 +7,21 @@ import '../model/api_routes.dart';
 import '../model/response_payload.dart';
 
 class APIProvider {
-  static Future<http.Response> login(String? payload) async {
+  static Future<ApiResponse> login(String? payload) async {
     final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/login');
 
-    print('here');
     try {
       return http.post(url, body: payload, headers: {
         'Content-Type': 'application/json',
       }).then((http.Response response) {
-        final int statusCode = response.statusCode;
         final Map<String, dynamic> mappedResponse = json.decode(response.body);
 
-        final LoginResponse convertedResponse =
-            LoginResponse.fromJson(mappedResponse);
+        final ApiResponse loginResponseObj =
+            ApiResponse.fromJson(mappedResponse);
 
-        // User user = User.fromJson(jsonMap);
-        print('response is ..........  ${convertedResponse}');
-        return response;
+        return loginResponseObj;
       });
     } catch (error) {
-      print('Error: $error');
       rethrow;
     }
   }

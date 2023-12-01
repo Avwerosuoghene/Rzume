@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../model/enums.dart';
 import '../ui/custom_drawer.dart';
 import '../ui/custom_overlay.dart';
 import 'main_sub_layout.dart';
@@ -21,7 +22,6 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
   late final Animation<double> positionAnimation2;
   late Tween<double> positionTween;
   late final Animation<double> opacityAnimation;
-  final animationDuration = const Duration(milliseconds: 500);
   late bool showOverlay;
   final double aspectRatio =
       WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
@@ -29,15 +29,19 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
       WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
   late double screenHeight;
   double drawerHeight = 200;
+  AnimationDuration durationEnum = AnimationDuration.short;
+  late Duration durationValue;
   @override
   void initState() {
+    durationValue = durationEnum.value;
+
     super.initState();
     _controller = AnimationController(
-      duration: animationDuration,
+      duration: durationValue,
       vsync: this,
     );
     _controller2 = AnimationController(
-      duration: animationDuration,
+      duration: durationValue,
       vsync: this,
     );
     showOverlay = false;
@@ -117,7 +121,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
         ),
         if (showOverlay)
           CustomOverlay(
-            toggleDrawer: toggleDrawer,
+            functionOnTap: toggleDrawer,
             opacityAnimation: opacityAnimation,
             controller: _controller,
           ),
@@ -128,7 +132,6 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
           positionAnimation: positionAnimation,
           opacityAnimation: opacityAnimation,
         )
-   
       ],
     );
   }

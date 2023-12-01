@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:rzume/model/widgets-arguments.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/widgets/auth-page-layout.dart';
@@ -25,7 +26,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     formData.otpInputVal4
   ];
 
-  final CounterModel _counter = CounterModel();
+  final CounterNotifier _counter = CounterNotifier();
 
   @override
   void initState() {
@@ -35,7 +36,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     //   verificationFormFields.add(formData.otpInput);
     // }
 
-    _counter.startTimer();
+    // _counter.startTimer();
+    context.read<CounterNotifier>().startTimer();
   }
 
   String formatTimeValue(int value) {
@@ -54,7 +56,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         .enteredValue); // Navigator.pushNamed(context, '/verified');
 
     navigateToAuthScreen();
-    Future.delayed(Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 10), () {
       Navigator.pop(context);
     });
   }
@@ -66,13 +68,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         builder: (BuildContext context) {
           return Container(
             color: const Color.fromARGB(133, 0, 0, 0),
-            child: CustomLoader(),
+            child: const CustomLoader(),
           );
         });
   }
 
   void resendOtpConfirmation() {
-    _counter.startTimer();
+    context.read<CounterNotifier>().startTimer();
   }
 
   @override
@@ -160,48 +162,50 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           // Text(
           //   '$formatedMinutes : $formatedSeconds',
           // ),
-          ListenableBuilder(
-            listenable: _counter,
-            builder: (BuildContext context, Widget? child) {
-              return Column(
+          // ListenableBuilder(
+          //   listenable: _counter,
+          //   builder: (BuildContext context, Widget? child) {
+          //     return
+
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Resend OTP in',
-                        style: Theme.of(context).textTheme.bodyMedium!,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w600),
-                        '${formatTimeValue(_counter.timerValues.minutes)} : ${formatTimeValue(_counter.timerValues.seconds)}',
-                      ),
-                    ],
+                  Text(
+                    'Resend OTP in',
+                    style: Theme.of(context).textTheme.bodyMedium!,
                   ),
-                  TextButton(
-                    style: TextButton.styleFrom(),
-                    onPressed: _counter.timerValues.timer == 0
-                        ? resendOtpConfirmation
-                        : null,
-                    child: Text(
-                      'Resend OTP',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: _counter.timerValues.timer == 0
-                              ? Theme.of(context).colorScheme.primary
-                              : null,
-                          fontWeight: FontWeight.w600),
-                    ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.w600),
+                    '${formatTimeValue(context.watch<CounterNotifier>().timerValues.minutes)} : ${formatTimeValue(context.watch<CounterNotifier>().timerValues.seconds)}',
                   ),
                 ],
-              );
-            },
+              ),
+              TextButton(
+                style: TextButton.styleFrom(),
+                onPressed: _counter.timerValues.timer == 0
+                    ? resendOtpConfirmation
+                    : null,
+                child: Text(
+                  'Resend OTP',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: _counter.timerValues.timer == 0
+                          ? Theme.of(context).colorScheme.primary
+                          : null,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
           ),
+          //   },
+          // ),
         ],
       ),
     );

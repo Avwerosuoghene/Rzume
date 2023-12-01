@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../model/misc-type.dart';
 
-class CounterModel with ChangeNotifier {
+class CounterNotifier with ChangeNotifier {
   int _count = 0;
   int get count => _count;
   ITimer timerValues = ITimer(minutes: 0, seconds: 0, timer: 0);

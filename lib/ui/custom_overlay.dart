@@ -2,22 +2,22 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-class CustomOverlay extends StatelessWidget {
+class CustomOverlay extends StatelessWidget  {
   @override
   const CustomOverlay(
       {super.key,
-      required this.toggleDrawer,
+      required this.functionOnTap,
       required this.opacityAnimation,
       required this.controller});
 
-  final void Function() toggleDrawer;
+  final void Function() functionOnTap;
   final AnimationController controller;
   final Animation<double> opacityAnimation;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: toggleDrawer,
+      onTap: functionOnTap,
       child: AnimatedBuilder(
         animation: controller,
         builder: (context, child) => Opacity(
