@@ -13,11 +13,11 @@ extension AnimationDurationExtension on AnimationDuration {
   Duration get value {
     switch (this) {
       case AnimationDuration.long:
-        return const Duration(milliseconds: 500);
+        return const Duration(milliseconds: 4000);
       case AnimationDuration.medium:
         return const Duration(milliseconds: 500);
       case AnimationDuration.short:
-        return const Duration(milliseconds: 4000);
+        return const Duration(milliseconds: 500);
     }
   }
 }

@@ -40,7 +40,7 @@ class _StartScreenState extends State<StartScreen> {
     // await Future.delayed(const Duration(seconds: 5));
     // _counter.startTimer();
     // _miscNotifier.triggerInfoDialog();
-    Navigator.pushNamed(context, '/signup');
+    Navigator.pushNamed(context, '/home');
   }
 
   @override

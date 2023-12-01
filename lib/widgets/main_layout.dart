@@ -19,7 +19,6 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
   late final AnimationController _controller;
   late final AnimationController _controller2;
   late final Animation<double> positionAnimation;
-  late final Animation<double> positionAnimation2;
   late Tween<double> positionTween;
   late final Animation<double> opacityAnimation;
   late bool showOverlay;
@@ -31,6 +30,10 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
   double drawerHeight = 200;
   AnimationDuration durationEnum = AnimationDuration.short;
   late Duration durationValue;
+  late void Function() showDrawerInit;
+
+  late void Function() showOverlayInit;
+
   @override
   void initState() {
     durationValue = durationEnum.value;
@@ -65,18 +68,20 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
   }
 
   void hideOverlay() {
-    if (showOverlay == true) {
-      setState(() {
-        showOverlay = false;
-      });
-    } else {
-      setState(() {
-        showOverlay = true;
-      });
-    }
+    showOverlayInit.call();
+    // if (showOverlay == true) {
+    //   setState(() {
+    //     showOverlay = false;
+    //   });
+    // } else {
+    //   setState(() {
+    //     showOverlay = true;
+    //   });
+    // }
   }
 
   void showDrawer() {
+    showDrawerInit.call();
     if (_controller.status == AnimationStatus.dismissed) {
       // If animation is at the start, play it forward
       _controller.forward();
@@ -119,15 +124,21 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
         MainSubLayout(
           toggleDrawer: toggleDrawer,
         ),
-        if (showOverlay)
-          CustomOverlay(
+        // if (showOverlay)
+        CustomOverlay(
+            builder: (BuildContext context, void Function() showOverlayChild) {
+              showOverlayInit = showOverlayChild;
+            },
             functionOnTap: toggleDrawer,
-            opacityAnimation: opacityAnimation,
-            controller: _controller,
-          ),
+            dialogVisibilityStatus: showOverlay),
+        // if (showOverlay)
         CustomDrawer(
+          builder: (BuildContext context, void Function() showDrawerChild) {
+            showDrawerInit = showDrawerChild;
+          },
           drawerHeight: drawerHeight,
           expandDrawer: expandDrawer,
+          dialogVisibilityStatus: showOverlay,
           positionController: _controller,
           positionAnimation: positionAnimation,
           opacityAnimation: opacityAnimation,

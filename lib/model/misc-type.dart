@@ -69,3 +69,6 @@ class ITimer {
   int seconds;
   int timer;
 }
+
+typedef MyBuilder = void Function(BuildContext context, void Function() methodFromChild);
+
