@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:rzume/model/enums.dart';
-import 'package:rzume/ui/cus_outline-button.dart';
-import 'package:rzume/widgets/auth-page-layout.dart';
+import 'package:rzume/ui/cus_outline_button.dart';
+import 'package:rzume/widgets/auth_page_layout.dart';
 
 import '../../../model/request_payload.dart';
 import '../../../services/api_provider.dart';

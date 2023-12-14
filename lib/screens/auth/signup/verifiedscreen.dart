@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
-import 'package:rzume/widgets/auth-page-layout.dart';
+import 'package:rzume/widgets/auth_page_layout.dart';
 
 class VerifiedScreen extends StatelessWidget {
   const VerifiedScreen({super.key});

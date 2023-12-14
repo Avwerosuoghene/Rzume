@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
 import '../../model/data.dart';
 import '../../ui/progress_bar.dart';
-import '../../widgets/horizontal-list.dart';
+import '../../widgets/horizontal_list.dart';
 import '../../widgets/start_screen_message.dart';
 
 class StartScreen extends StatefulWidget {

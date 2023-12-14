@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'package:rzume/screens/start/splash.dart';
 import 'package:rzume/screens/start/startscreen.dart';
-import '../model/enums.dart';
 
 class StartControl extends StatefulWidget {
   const StartControl({super.key});

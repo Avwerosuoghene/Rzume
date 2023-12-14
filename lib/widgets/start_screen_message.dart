@@ -14,9 +14,6 @@ class StartScreenMessage extends StatelessWidget {
         messageProps.image,
         width: 188,
       ),
-      // const SizedBox(
-      //   height: 40,
-      // ),
       Text(messageProps.title_1,
           style: Theme.of(context).textTheme.titleSmall!),
       if (messageProps.title_2 != null)

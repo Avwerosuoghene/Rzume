@@ -27,7 +27,7 @@ class _InfomodalState extends State<Infomodal> with TickerProviderStateMixin {
   final Logger logger = Logger();
   late void Function() showOverlayInit;
   bool showDrawer = false;
-  late Timer _timer;
+  late Timer? _timer;
   @override
   void initState() {
     super.initState();

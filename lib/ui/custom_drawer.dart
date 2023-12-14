@@ -95,11 +95,7 @@ class _CustomDrawer extends State<CustomDrawer> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    // if (widget.dialogVisibilityStatus == true) {
-    //   showDrawer();
-    // } else {
-    //   hideDrawer();
-    // }
+  
 
     widget.builder.call(context, showDrawer);
     return AnimatedBuilder(

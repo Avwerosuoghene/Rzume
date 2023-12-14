@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rzume/model/enums.dart';
-import 'package:rzume/widgets/auth-page-layout.dart';
+import 'package:rzume/widgets/auth_page_layout.dart';
 
 import '../../../model/widgets-arguments.dart';
-import '../../../ui/cus_outline-button.dart';
+import '../../../ui/cus_outline_button.dart';
 import '../../../widgets/custom_form.dart';
 
 class SignUpScreen extends StatefulWidget {

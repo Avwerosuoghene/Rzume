@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:rzume/model/widgets-arguments.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
-import 'package:rzume/widgets/auth-page-layout.dart';
+import 'package:rzume/widgets/auth_page_layout.dart';
 
 import '../../model/data.dart';
 import '../../model/misc-type.dart';
@@ -31,12 +31,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   void initState() {
     super.initState();
-
-    // for (var i = 1; i < 5; i++) {
-    //   verificationFormFields.add(formData.otpInput);
-    // }
-
-    // _counter.startTimer();
     context.read<CounterNotifier>().startTimer();
   }
 
@@ -47,13 +41,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   void otpConfirmation() {
     _counter.stopTimer();
-    _form.currentState!
-        .save(); // This triggers the onSaved callback for each field
-
-    // Now you can access the values entered in the form
-    // For example:
-    print(verificationFormFields[1]
-        .enteredValue); // Navigator.pushNamed(context, '/verified');
+    _form.currentState!.save();
 
     navigateToAuthScreen();
     Future.delayed(const Duration(seconds: 10), () {
@@ -158,14 +146,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           const SizedBox(
             height: 10,
           ),
-
-          // Text(
-          //   '$formatedMinutes : $formatedSeconds',
-          // ),
-          // ListenableBuilder(
-          //   listenable: _counter,
-          //   builder: (BuildContext context, Widget? child) {
-          //     return
 
           Column(
             children: [

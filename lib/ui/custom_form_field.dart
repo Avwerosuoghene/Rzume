@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../model/enums.dart';
 
 class CustomFormField extends StatefulWidget {
-  CustomFormField(
+  const CustomFormField(
       {super.key,
       required this.formHint,
       required this.formLabel,

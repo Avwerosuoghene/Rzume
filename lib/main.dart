@@ -40,8 +40,6 @@ class MyApp extends StatelessWidget {
             return Stack(
               children: <Widget>[
                 child!,
-
-                // const InfoOverlayCaller(),
                 const Infomodal(),
               ],
             );

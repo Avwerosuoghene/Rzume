@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
@@ -14,9 +11,6 @@ class APIService {
       printer:
           PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
 
-  // final Function(Object? payload) httpFunction;
-  // final Object? payload;
-
   Future<Object?> sendRequest(
       {required Future<ApiResponse> Function(String?) httpFunction,
       String? payload,
@@ -27,12 +21,19 @@ class APIService {
         asyncResponse = await httpFunction(payload);
         if (asyncResponse.isSuccess == true) {
           logger.i(asyncResponse.result);
-          context.read<MiscNotifer>().triggerSuccess('Success');
+
+          // Checking for context is mounted is the best way to deal with using
+          // build context in asynchronous calls
+          if (context.mounted) {
+            context.read<MiscNotifer>().triggerSuccess('Success');
+          }
           return asyncResponse.result!;
         } else {
           final errorMessage = asyncResponse.errorMessages[0];
           logger.i(errorMessage);
-          context.read<MiscNotifer>().triggerFailure(errorMessage);
+          if (context.mounted) {
+            context.read<MiscNotifer>().triggerFailure(errorMessage);
+          }
 
           return null;
         }

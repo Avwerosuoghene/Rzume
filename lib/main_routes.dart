@@ -1,5 +1,4 @@
 import 'package:rzume/screens/auth/auth-routes.dart';
-import 'package:rzume/screens/home/landingpagescreen.dart';
 import 'package:rzume/screens/start/splash.dart';
 import 'package:rzume/screens/start/startscreen.dart';
 import 'package:rzume/screens/utility/otp_verificationscreen.dart';

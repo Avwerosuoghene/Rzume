@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:rzume/model/request_payload.dart';
 
 import '../model/api_routes.dart';
 import '../model/response_payload.dart';

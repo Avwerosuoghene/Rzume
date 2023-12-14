@@ -21,31 +21,29 @@ class SuccessDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(5), // Adjust the border radius here
       ),
       children: [
-        Container(
-          child: Column(children: [
-            Image.asset(
-              dialogIcon,
-              width: 60,
+        Column(children: [
+          Image.asset(
+            dialogIcon,
+            width: 60,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(dialogTitle,
+              style: Theme.of(context).textTheme.titleSmall!,
+              textAlign: TextAlign.center),
+          const SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            width: 300,
+            child: Text(
+              dialogBody,
+              style: Theme.of(context).textTheme.bodyMedium!,
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(dialogTitle,
-                style: Theme.of(context).textTheme.titleSmall!,
-                textAlign: TextAlign.center),
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              width: 300,
-              child: Text(
-                dialogBody,
-                style: Theme.of(context).textTheme.bodyMedium!,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ]),
-        )
+          ),
+        ]),
       ],
     );
   }

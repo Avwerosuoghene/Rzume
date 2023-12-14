@@ -6,7 +6,7 @@ var kColorScheme = ColorScheme.fromSeed(
     primary: const Color.fromRGBO(44, 135, 190, 1),
     secondary: const Color.fromRGBO(16, 96, 166, 1.0),
     tertiary: const Color.fromARGB(255, 22, 78, 130),
-    onBackground: Color.fromARGB(255, 245, 245, 245));
+    onBackground: const Color.fromARGB(255, 245, 245, 245));
 
 var kDarkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,

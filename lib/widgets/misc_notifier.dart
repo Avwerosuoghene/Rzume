@@ -6,13 +6,6 @@ class MiscNotifer with ChangeNotifier {
   Color infoColor = Colors.blue;
   String dialogMsg = '';
 
-  // void triggerInfoDialog(String msg) {
-  //   overlayVisible = showInfoDialog = true;
-  //   infoColor = const Color.fromARGB(255, 212, 51, 0);
-  //   dialogMsg = msg;
-  //   notifyListeners();
-  // }
-
   void triggerFailure(String msg) {
     infoColor = const Color.fromARGB(255, 212, 51, 0);
     _showDialog(msg);
@@ -32,13 +25,4 @@ class MiscNotifer with ChangeNotifier {
   void hideInfoDialog() {
     overlayVisible = showInfoDialog = false;
   }
-
-  // void triggerOverlay() {
-  //   if (overlayVisible == true) {
-  //     overlayVisible = false;
-  //   } else {
-  //     overlayVisible = true;
-  //   }
-  //   notifyListeners();
-  // }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CusOutlineButton extends StatelessWidget {
-  CusOutlineButton(
+  const CusOutlineButton(
       {super.key,
       required this.icon,
       required this.buttonText,

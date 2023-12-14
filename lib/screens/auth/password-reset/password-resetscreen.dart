@@ -4,7 +4,7 @@ import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/widgets-arguments.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/ui/custom_form_field.dart';
-import 'package:rzume/widgets/auth-page-layout.dart';
+import 'package:rzume/widgets/auth_page_layout.dart';
 
 final ICustomFormField emailFormData = formData.email;
 
