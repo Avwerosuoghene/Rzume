@@ -27,9 +27,16 @@ class _SigninScreenState extends State<SigninScreen> {
     final payload = LoginRequest(username: email, password: password);
     showLoader();
     final response = await apiService.sendRequest(
-        httpFunction: APIProvider.login, payload: payload.toJson());
+        httpFunction: APIProvider.login,
+        payload: payload.toJson(),
+        context: context);
     closeLoader();
-    logger.i(response);
+    if (response != null) {
+      logger.i('response received');
+    } else {
+      logger.e('response not received');
+    }
+    // logger.i(response);
   }
 
   void closeLoader() {

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -12,6 +14,7 @@ import 'package:rzume/screens/start/startscreen.dart';
 import 'package:rzume/screens/utility/otp_verificationscreen.dart';
 import 'package:rzume/ui/info_modal.dart';
 import 'package:rzume/widgets/counter_notifier.dart';
+import 'package:rzume/widgets/info_overlay_caller.dart';
 import 'package:rzume/widgets/misc_notifier.dart';
 import 'package:rzume/widgets/start_control.dart';
 import 'package:rzume/widgets/theme.dart';
@@ -35,9 +38,10 @@ class MyApp extends StatelessWidget {
           theme: lightThemeData,
           builder: (BuildContext context, Widget? child) {
             return Stack(
-              children: [
+              children: <Widget>[
                 child!,
-                
+
+                // const InfoOverlayCaller(),
                 const Infomodal(),
               ],
             );

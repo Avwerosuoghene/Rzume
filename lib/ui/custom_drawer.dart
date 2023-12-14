@@ -7,23 +7,10 @@ class CustomDrawer extends StatefulWidget {
   @override
   const CustomDrawer(
       {super.key,
-      required this.drawerHeight,
-      required this.expandDrawer,
-      required this.positionController,
-      required this.positionAnimation,
-      required this.opacityAnimation,
-      required this.dialogVisibilityStatus,
       required this.builder});
 
   final MyBuilder builder;
 
-  final double drawerHeight;
-  final void Function() expandDrawer;
-  final AnimationController positionController;
-  final Animation<double> positionAnimation;
-  final Animation<double> opacityAnimation;
-
-  final bool dialogVisibilityStatus;
 
   @override
   State<CustomDrawer> createState() => _CustomDrawer();

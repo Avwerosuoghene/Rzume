@@ -8,14 +8,10 @@ import '../model/misc-type.dart';
 class CustomOverlay extends StatefulWidget {
   @override
   const CustomOverlay(
-      {super.key,
-      required this.functionOnTap,
-      required this.dialogVisibilityStatus,
-      required this.builder});
+      {super.key, required this.functionOnTap, required this.builder});
   final MyBuilder builder;
 
   final void Function() functionOnTap;
-  final bool dialogVisibilityStatus;
 
   @override
   State<CustomOverlay> createState() => _CustomOverlayState();
@@ -27,6 +23,7 @@ class _CustomOverlayState extends State<CustomOverlay>
   late final Animation<double> opacityAnimation;
   AnimationDuration durationEnum = AnimationDuration.short;
   late Duration durationValue;
+  bool showOverlay = false;
 
   @override
   void initState() {
@@ -37,18 +34,19 @@ class _CustomOverlayState extends State<CustomOverlay>
       vsync: this,
     );
     opacityAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
-    if (widget.dialogVisibilityStatus == true) {
-      showDialog();
-    } else {
-      hideDialog();
-    }
   }
 
   showDialog() {
+    setState(() {
+      showOverlay = true;
+    });
     _controller.forward();
   }
 
   hideDialog() {
+    setState(() {
+      showOverlay = false;
+    });
     _controller.reverse();
   }
 
@@ -64,23 +62,31 @@ class _CustomOverlayState extends State<CustomOverlay>
   Widget build(BuildContext context) {
     widget.builder.call(context, toggleOverlay);
 
-    return GestureDetector(
-      onTap: widget.functionOnTap,
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) => Opacity(
-          opacity: opacityAnimation.value,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-            child: Container(
-              color: Colors.black.withOpacity(0.5),
-              child: const Center(
-                child: SizedBox(width: 10, height: 10),
+    Widget overlayContent = const SizedBox(
+      width: 0,
+      height: 0,
+    );
+
+    if (showOverlay == true) {
+      overlayContent = GestureDetector(
+        onTap: widget.functionOnTap,
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) => Opacity(
+            opacity: opacityAnimation.value,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: SizedBox(width: 10, height: 10),
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
+    return overlayContent;
   }
 }
