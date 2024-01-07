@@ -15,6 +15,11 @@ class CounterNotifier with ChangeNotifier {
   final int secondsInMinute = 60;
 
   void startTimer() {
+    timerValues.timer = 0;
+    timerValues.minutes = 0;
+    timerValues.seconds = 0;
+    _timer.cancel();
+    
     final int startTime = durationInMinutes;
     timerValues.timer = startTime * secondsInMinute;
 
@@ -26,7 +31,8 @@ class CounterNotifier with ChangeNotifier {
         } else {
           timerValues.timer--;
 
-          timerValues.minutes = (timerValues.timer / secondsInMinute).truncate();
+          timerValues.minutes =
+              (timerValues.timer / secondsInMinute).truncate();
           timerValues.seconds = timerValues.timer % secondsInMinute;
           notifyListeners();
         }

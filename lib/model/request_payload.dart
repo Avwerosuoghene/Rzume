@@ -8,8 +8,26 @@ class LoginRequest {
 
   Map<String, dynamic> toMap() {
     return {
-      'username': username,
-      'password': password,
+      'Username': username,
+      'Password': password,
+    };
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
+  }
+}
+
+class SignupRequest {
+  SignupRequest({required this.email, required this.password});
+
+  final String email;
+  final String password;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'Email': email,
+      'Password': password,
     };
   }
 

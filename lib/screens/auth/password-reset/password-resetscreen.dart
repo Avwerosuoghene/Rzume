@@ -40,14 +40,15 @@ class PasswordResetScreen extends StatelessWidget {
               width: 300,
               margin: const EdgeInsets.only(top: 12, bottom: 15),
               child: const Text(
-                'Please click on the link we just sent to your email.',
+                'Please enter the 4 digit code to your mail to initiate password reset',
                 textAlign: TextAlign.center,
               )),
         ],
       );
 
       Navigator.pushNamed(context, '/otp-verification',
-          arguments: OtpVerificationScreenArg(screenText: emailScreenText));
+          arguments: OtpVerificationScreenArg(
+              screenText: emailScreenText, mail: _enteredEmail));
     }
 
     final Widget pageContents = Column(

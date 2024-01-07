@@ -1,14 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:rzume/model/enums.dart';
+import 'package:rzume/model/misc-type.dart';
+import 'package:rzume/storage/global_values.dart';
 import 'package:rzume/ui/cus_outline_button.dart';
 import 'package:rzume/widgets/auth_page_layout.dart';
 
 import '../../../model/request_payload.dart';
+import '../../../model/response_payload.dart';
 import '../../../services/api_provider.dart';
 import '../../../services/api_service.dart';
 import '../../../ui/loader.dart';
 import '../../../widgets/custom_form.dart';
+import '../../../widgets/helper_functions.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -25,16 +31,27 @@ class _SigninScreenState extends State<SigninScreen> {
 
   Future<void> signin(String email, String password) async {
     final payload = LoginRequest(username: email, password: password);
-    showLoader();
-    final response = await apiService.sendRequest(
+    HelperFunctions.showLoader(context);
+    final SigninResponse? response = await apiService.sendRequest(
         httpFunction: APIProvider.login,
         payload: payload.toJson(),
         context: context);
-    closeLoader();
-    if (response != null) {
-      logger.i('response received');
-    } else {
-      logger.e('response not received');
+    if (context.mounted) {
+      HelperFunctions.closeLoader(context);
+    }
+    if (response == null) {
+      return;
+    }
+
+    logger.i(response!.user.runtimeType);
+    final IUser user = IUser.fromJson(response!.user);
+
+    if (response.token != "") {
+      if (context.mounted) {
+        GlobalValues.setLoginStatus(true, response.token);
+        logger.i('token saved succesfully');
+        // Navigator.pushNamed(context, '/home');
+      }
     }
     // logger.i(response);
   }
@@ -43,17 +60,17 @@ class _SigninScreenState extends State<SigninScreen> {
     Navigator.pop(context);
   }
 
-  showLoader() {
-    showDialog<String>(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            color: const Color.fromARGB(133, 0, 0, 0),
-            child: const CustomLoader(),
-          );
-        });
-  }
+  // showLoader() {
+  //   showDialog<String>(
+  //       barrierDismissible: false,
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return Container(
+  //           color: const Color.fromARGB(133, 0, 0, 0),
+  //           child: const CustomLoader(),
+  //         );
+  //       });
+  // }
 
   @override
   Widget build(BuildContext context) {

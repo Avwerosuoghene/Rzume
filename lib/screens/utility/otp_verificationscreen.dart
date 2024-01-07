@@ -169,16 +169,19 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
               TextButton(
                 style: TextButton.styleFrom(),
-                onPressed: _counter.timerValues.timer == 0
-                    ? resendOtpConfirmation
-                    : null,
+                onPressed:
+                    context.watch<CounterNotifier>().timerValues.timer == 0
+                        ? resendOtpConfirmation
+                        : null,
                 child: Text(
                   'Resend OTP',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: _counter.timerValues.timer == 0
-                          ? Theme.of(context).colorScheme.primary
-                          : null,
+                      color:
+                          context.watch<CounterNotifier>().timerValues.timer ==
+                                  0
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.grey,
                       fontWeight: FontWeight.w600),
                 ),
               ),

@@ -11,7 +11,7 @@ class APIService {
       printer:
           PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
 
-  Future<Object?> sendRequest(
+  Future<T?> sendRequest<T>(
       {required Future<ApiResponse> Function(String?) httpFunction,
       String? payload,
       required BuildContext context}) async {
@@ -20,17 +20,19 @@ class APIService {
       try {
         asyncResponse = await httpFunction(payload);
         if (asyncResponse.isSuccess == true) {
-          logger.i(asyncResponse.result);
-
           // Checking for context is mounted is the best way to deal with using
           // build context in asynchronous calls
+
           if (context.mounted) {
-            context.read<MiscNotifer>().triggerSuccess('Success');
+            context
+                .read<MiscNotifer>()
+                .triggerSuccess(asyncResponse.result!.message);
           }
-          return asyncResponse.result!;
+          logger.i('reponse succesfully sent from provider to subscriber');
+          return asyncResponse.result!.content! as T;
         } else {
           final errorMessage = asyncResponse.errorMessages[0];
-          logger.i(errorMessage);
+          logger.e('An error occuered with details: $errorMessage');
           if (context.mounted) {
             context.read<MiscNotifer>().triggerFailure(errorMessage);
           }
@@ -43,7 +45,7 @@ class APIService {
       }
     } else {
       asyncResponse = await httpFunction(null);
-      return {};
+      return null;
     }
   }
 }

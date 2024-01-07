@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:rzume/model/enums.dart';
+import 'package:rzume/model/response_payload.dart';
 import 'package:rzume/widgets/auth_page_layout.dart';
+import 'package:rzume/widgets/helper_functions.dart';
 
+import '../../../model/request_payload.dart';
 import '../../../model/widgets-arguments.dart';
+import '../../../services/api_provider.dart';
+import '../../../services/api_service.dart';
 import '../../../ui/cus_outline_button.dart';
 import '../../../widgets/custom_form.dart';
 
 class SignUpScreen extends StatefulWidget {
-  SignUpScreen({super.key});
+  const SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final logger = Logger(
+      printer:
+          PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
+  final APIService apiService = APIService();
+
   @override
   void initState() {
     super.initState();
-    showErrorMessage();
-  }
-
-  Future<void> showErrorMessage() async {
-    await Future.delayed(Duration(seconds: 2), () {
-      errorMessage = 'Error';
-    });
+    // showErrorMessage();
   }
 
   String? errorMessage;
@@ -35,11 +40,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     googleSignup() {}
 
     signIn() {
-      // Navigator.pushNamed(context, '/signin');
-      Navigator.pushNamed(context, '/create-password');
+      Navigator.pushNamed(context, '/signin');
+      // Navigator.pushNamed(context, '/create-password');
     }
 
-    Future<void> signup(String email, String password) async {
+    navigateToOtpPage(String email) {
       final Widget emailScreenText = Column(
         children: [
           Text("Verify Email", style: Theme.of(context).textTheme.titleMedium!),
@@ -49,7 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  text: 'Please enter the otp sent to your mail ',
+                  text: 'Please enter the 4 digit code sent to your mail ',
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!
@@ -68,7 +73,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
 
       Navigator.pushNamed(context, '/otp-verification',
-          arguments: OtpVerificationScreenArg(screenText: emailScreenText));
+          arguments: OtpVerificationScreenArg(
+              screenText: emailScreenText, mail: email));
+    }
+
+    Future<void> signup(String email, String password) async {
+      final payload = SignupRequest(email: email, password: password);
+      HelperFunctions.showLoader(context);
+      try {
+        final SignupResponse? signupResponse = await apiService.sendRequest(
+            httpFunction: APIProvider.signup,
+            payload: payload.toJson(),
+            context: context);
+        logger.i(signupResponse);
+        if (context.mounted) {
+          HelperFunctions.closeLoader(context);
+        }
+
+        if (signupResponse != null && signupResponse.isCreated) {
+          // navigateToOtpPage(email);
+        }
+      } catch (error) {
+        if (context.mounted) {
+          HelperFunctions.closeLoader(context);
+        }
+      }
     }
 
     final Widget pageContents = Column(children: [
@@ -105,18 +134,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: const Text(
             'Or sign up with your email',
           )),
-      FutureBuilder<void>(
-        future: showErrorMessage(),
-        builder: (context, snapshot) {
-          return CustomForm(
-            key: UniqueKey(), // Use UniqueKey to force widget rebuild
-            formType: FormType.signup,
-            submitBtnText: 'Sign up with email',
-            errorMessage: errorMessage,
-            confirmFunction: signup,
-          );
-        },
+
+      CustomForm(
+        key: UniqueKey(), // Use UniqueKey to force widget rebuild
+        formType: FormType.signup,
+        submitBtnText: 'Sign up with email',
+        errorMessage: errorMessage,
+        confirmFunction: signup,
       ),
+      //   },
+      // ),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
