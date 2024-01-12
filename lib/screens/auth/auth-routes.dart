@@ -9,6 +9,6 @@ Map<String, Widget Function(BuildContext)> authRoutes = {
   '/signup': (context) => SignUpScreen(),
   '/verified': (context) => const VerifiedScreen(),
   '/signin': (context) => const SigninScreen(),
-  '/reset-password': (context) => const PasswordResetScreen(),
+  '/reset-password': (context) => PasswordResetScreen(),
   '/create-password': (context) => const CreatePasswordScreen()
 };

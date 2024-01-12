@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'misc-type.dart';
-
 class ApiResponse<T> {
   ApiResponse(
       {required this.statusCode,
@@ -37,9 +33,9 @@ class ApiResult<T> {
   final String message;
 
   factory ApiResult.fromJson(Map<String, dynamic> parsedJson,
-      T Function(Map<String, dynamic>) fromJsonT) {
+      T Function(Map<String, dynamic>)? fromJsonT) {
     return ApiResult<T>(
-      content: parsedJson['content'] != null
+      content: parsedJson['content'] != null && fromJsonT != null
           ? fromJsonT(parsedJson['content'] as Map<String, dynamic>)
           : null,
       message: parsedJson['message'] as String,
@@ -67,10 +63,9 @@ class SignupResponse {
   SignupResponse({required this.isCreated});
 
   final bool isCreated;
-factory SignupResponse.fromJson(Map<String, dynamic> parsedJson) {
+  factory SignupResponse.fromJson(Map<String, dynamic> parsedJson) {
     return SignupResponse(
       isCreated: parsedJson['isCreated'] as bool,
     );
   }
-
 }

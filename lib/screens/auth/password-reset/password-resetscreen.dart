@@ -6,10 +6,16 @@ import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/ui/custom_form_field.dart';
 import 'package:rzume/widgets/auth_page_layout.dart';
 
+import '../../../model/request_payload.dart';
+import '../../../services/api_provider.dart';
+import '../../../services/api_service.dart';
+import '../../../widgets/helper_functions.dart';
+
 final ICustomFormField emailFormData = formData.email;
 
 class PasswordResetScreen extends StatelessWidget {
-  const PasswordResetScreen({super.key});
+  PasswordResetScreen({super.key});
+  final APIService apiService = APIService();
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +29,7 @@ class PasswordResetScreen extends StatelessWidget {
       return null;
     }
 
-    void submitForm() {
-      final isValid = _form.currentState!.validate();
-
-      if (!isValid) {
-        return;
-      }
-
-      _form.currentState!.save();
-      _enteredEmail = emailFormData.enteredValue;
-
+    Widget createOtpScreentext() {
       final Widget emailScreenText = Column(
         children: [
           Text("Email Sent", style: Theme.of(context).textTheme.titleMedium!),
@@ -45,10 +42,43 @@ class PasswordResetScreen extends StatelessWidget {
               )),
         ],
       );
+      return emailScreenText;
+    }
 
-      Navigator.pushNamed(context, '/otp-verification',
-          arguments: OtpVerificationScreenArg(
-              screenText: emailScreenText, mail: _enteredEmail));
+    Future<bool> validateEmail(String email) async {
+      final payload = ValidateEmail(email: email);
+      HelperFunctions.showLoader(context);
+      final Map<String, dynamic>? response = await apiService.sendRequest(
+          httpFunction: APIProvider.validateEmail,
+          payload: payload.toJson(),
+          context: context);
+
+      if (context.mounted) {
+        HelperFunctions.closeLoader(context);
+      }
+      if (response == null) {
+        return false;
+      }
+      return true;
+    }
+
+    void submitForm() async {
+      final isValid = _form.currentState!.validate();
+
+      if (!isValid) {
+        return;
+      }
+
+      _form.currentState!.save();
+      _enteredEmail = emailFormData.enteredValue;
+
+      bool emailValidationResponse = await validateEmail(_enteredEmail);
+
+      if (emailValidationResponse == true && context.mounted) {
+        Navigator.pushNamed(context, '/otp-verification',
+            arguments: OtpVerificationScreenArg(
+                screenText: createOtpScreentext(), mail: _enteredEmail));
+      }
     }
 
     final Widget pageContents = Column(

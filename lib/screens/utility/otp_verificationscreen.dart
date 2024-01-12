@@ -68,7 +68,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     tryAnotherMail() {
-      Navigator.pushNamed(context, '/signup');
+      Navigator.pop(context);
+      // Navigator.pushNamed(context, '/signup');
     }
 
     List<Widget> buildFormFields() {

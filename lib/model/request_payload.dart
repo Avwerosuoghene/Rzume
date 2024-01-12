@@ -35,3 +35,17 @@ class SignupRequest {
     return jsonEncode(toMap());
   }
 }
+
+class ValidateEmail {
+  ValidateEmail({required this.email});
+  final String email;
+  Map<String, dynamic> toMap() {
+    return {
+      'Email': email,
+    };
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
+  }
+}

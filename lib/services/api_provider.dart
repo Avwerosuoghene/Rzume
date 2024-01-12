@@ -47,4 +47,24 @@ class APIProvider {
       rethrow;
     }
   }
+
+  static Future<ApiResponse<Object>> validateEmail(String? payload) async {
+    final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/validate-email');
+
+    try {
+      return http.post(url, body: payload, headers: {
+        'Content-Type': 'application/json',
+      }).then((http.Response response) {
+        final Map<String, dynamic> mappedResponse = json.decode(response.body);
+        final ApiResponse<Object> validateEmailObj =
+            ApiResponse.fromJson(mappedResponse, null);
+
+        logger.i(
+            'validate email response succesful: ${validateEmailObj.isSuccess}');
+        return validateEmailObj;
+      });
+    } catch (error) {
+      rethrow;
+    }
+  }
 }
