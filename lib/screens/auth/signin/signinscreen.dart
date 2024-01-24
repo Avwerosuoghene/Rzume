@@ -30,10 +30,10 @@ class _SigninScreenState extends State<SigninScreen> {
   final APIService apiService = APIService();
 
   Future<void> signin(String email, String password) async {
-    final payload = LoginRequest(username: email, password: password);
+    final payload = LoginRequestPayload(username: email, password: password);
     HelperFunctions.showLoader(context);
     final SigninResponse? response = await apiService.sendRequest(
-        httpFunction: APIProvider.login,
+        httpFunction: AuthAPIProvider.login,
         payload: payload.toJson(),
         context: context);
     if (context.mounted) {
@@ -43,17 +43,15 @@ class _SigninScreenState extends State<SigninScreen> {
       return;
     }
 
-    logger.i(response!.user.runtimeType);
     final IUser user = IUser.fromJson(response!.user);
 
     if (response.token != "") {
       if (context.mounted) {
         GlobalValues.setLoginStatus(true, response.token);
         logger.i('token saved succesfully');
-        // Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/home');
       }
     }
-    // logger.i(response);
   }
 
   void closeLoader() {

@@ -42,7 +42,7 @@ class ICustomFormTypes {
       {required this.email,
       required this.password,
       required this.confirmPassword,
-      required this.defaultPass,
+      // required this.defaultPass,
       required this.otpInputVal1,
       required this.otpInputVal2,
       required this.otpInputVal3,
@@ -51,7 +51,7 @@ class ICustomFormTypes {
   final ICustomFormField email;
   final ICustomFormField password;
   final ICustomFormField confirmPassword;
-  final ICustomFormField defaultPass;
+  // final ICustomFormField defaultPass;
   final ICustomFormField otpInputVal1;
   final ICustomFormField otpInputVal2;
   final ICustomFormField otpInputVal3;

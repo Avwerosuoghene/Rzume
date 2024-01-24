@@ -29,27 +29,11 @@ class PasswordResetScreen extends StatelessWidget {
       return null;
     }
 
-    Widget createOtpScreentext() {
-      final Widget emailScreenText = Column(
-        children: [
-          Text("Email Sent", style: Theme.of(context).textTheme.titleMedium!),
-          Container(
-              width: 300,
-              margin: const EdgeInsets.only(top: 12, bottom: 15),
-              child: const Text(
-                'Please enter the 4 digit code to your mail to initiate password reset',
-                textAlign: TextAlign.center,
-              )),
-        ],
-      );
-      return emailScreenText;
-    }
-
     Future<bool> validateEmail(String email) async {
-      final payload = ValidateEmail(email: email);
+      final payload = ValidateEmailPayload(email: email);
       HelperFunctions.showLoader(context);
       final Map<String, dynamic>? response = await apiService.sendRequest(
-          httpFunction: APIProvider.validateEmail,
+          httpFunction: AuthAPIProvider.validateEmail,
           payload: payload.toJson(),
           context: context);
 
@@ -75,9 +59,8 @@ class PasswordResetScreen extends StatelessWidget {
       bool emailValidationResponse = await validateEmail(_enteredEmail);
 
       if (emailValidationResponse == true && context.mounted) {
-        Navigator.pushNamed(context, '/otp-verification',
-            arguments: OtpVerificationScreenArg(
-                screenText: createOtpScreentext(), mail: _enteredEmail));
+        Navigator.pushNamed(context, '/create-password',
+            arguments: CreatePasswordArgs(mail: _enteredEmail));
       }
     }
 

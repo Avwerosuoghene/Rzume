@@ -39,13 +39,13 @@ ICustomFormTypes formData = ICustomFormTypes(
     showSuffixIcon: true,
     keyboardType: TextInputType.visiblePassword,
   ),
-  defaultPass: ICustomFormField(
-    formHint: 'Enter default password',
-    formLabel: 'Default Password',
-    formPreficIcon: 'assets/icons/password.png',
-    showSuffixIcon: true,
-    keyboardType: TextInputType.emailAddress,
-  ),
+  // defaultPass: ICustomFormField(
+  //   formHint: 'Enter default password',
+  //   formLabel: 'Default Password',
+  //   formPreficIcon: 'assets/icons/password.png',
+  //   showSuffixIcon: true,
+  //   keyboardType: TextInputType.emailAddress,
+  // ),
   otpInputVal1: ICustomFormField(
     formHint: '0',
     formLabel: '',

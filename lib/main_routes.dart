@@ -11,5 +11,5 @@ final routes = {
   '/start': (context) => const StartScreen(),
   ...authRoutes,
   '/otp-verification': (context) => const OtpVerificationScreen(),
-  '/home': (context) => MainLayout()
+  '/home': (context) => const MainLayout()
 };

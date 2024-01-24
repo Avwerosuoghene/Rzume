@@ -37,25 +37,29 @@ class ApiResult<T> {
     return ApiResult<T>(
       content: parsedJson['content'] != null && fromJsonT != null
           ? fromJsonT(parsedJson['content'] as Map<String, dynamic>)
-          : null,
+          : parsedJson['content'] as T?,
       message: parsedJson['message'] as String,
     );
   }
 }
 
 class SigninResponse {
-  SigninResponse({
-    required this.user,
-    required this.token,
-  });
+  SigninResponse(
+      {required this.user,
+      required this.token,
+      required this.message,
+      required this.emailConfirmed});
   final Map<String, dynamic> user;
   final String token;
+  final String message;
+  final bool emailConfirmed;
 
   factory SigninResponse.fromJson(Map<String, dynamic> parsedJson) {
     return SigninResponse(
-      user: parsedJson['user'] as Map<String, dynamic>,
-      token: parsedJson['token'] as String,
-    );
+        user: parsedJson['user'] as Map<String, dynamic>,
+        token: parsedJson['token'] as String,
+        message: parsedJson['token'] as String,
+        emailConfirmed: parsedJson['emailConfirmed'] as bool);
   }
 }
 
@@ -67,5 +71,27 @@ class SignupResponse {
     return SignupResponse(
       isCreated: parsedJson['isCreated'] as bool,
     );
+  }
+}
+
+class OtpPasswordResetResponse {
+  OtpPasswordResetResponse({required this.isSuccess, required this.message});
+
+  final bool isSuccess;
+  final String message;
+  factory OtpPasswordResetResponse.fromJson(Map<String, dynamic> parsedJson) {
+    return OtpPasswordResetResponse(
+        isSuccess: parsedJson['isSuccess'] as bool,
+        message: parsedJson['message'] as String);
+  }
+}
+
+class GenericResponse {
+  GenericResponse({required this.isSuccess});
+
+  final bool isSuccess;
+
+  factory GenericResponse.fromJson(Map<String, dynamic> parsedJson) {
+    return GenericResponse(isSuccess: parsedJson['isSuccess'] as bool);
   }
 }

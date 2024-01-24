@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 import '../model/api_routes.dart';
 import '../model/response_payload.dart';
 
-class APIProvider {
+class AuthAPIProvider {
   static final logger = Logger(
       printer:
           PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
@@ -37,8 +37,8 @@ class APIProvider {
         'Content-Type': 'application/json',
       }).then((http.Response response) {
         final Map<String, dynamic> mappedResponse = json.decode(response.body);
-        final ApiResponse<Object> signUpResponseObj =
-            ApiResponse.fromJson(mappedResponse, null);
+        final ApiResponse<SignupResponse> signUpResponseObj =
+            ApiResponse.fromJson(mappedResponse, SignupResponse.fromJson);
 
         logger.i('signup response succesful: ${signUpResponseObj.isSuccess}');
         return signUpResponseObj;
@@ -62,6 +62,69 @@ class APIProvider {
         logger.i(
             'validate email response succesful: ${validateEmailObj.isSuccess}');
         return validateEmailObj;
+      });
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  static Future<ApiResponse<SigninResponse>> validateUser(
+      String? payload) async {
+    final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/confirm-user');
+
+    try {
+      return http.post(url, body: payload, headers: {
+        'Content-Type': 'application/json',
+      }).then((http.Response response) {
+        final Map<String, dynamic> mappedResponse = json.decode(response.body);
+        final ApiResponse<SigninResponse> validateUserObj =
+            ApiResponse.fromJson(mappedResponse, SigninResponse.fromJson);
+
+        logger.i(
+            'validate email response succesful: ${validateUserObj.isSuccess}');
+        return validateUserObj;
+      });
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  static Future<ApiResponse<OtpPasswordResetResponse>> otpPasswordReset(
+      String? payload) async {
+    final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/otp-reset-pass');
+
+    try {
+      return http.post(url, body: payload, headers: {
+        'Content-Type': 'application/json',
+      }).then((http.Response response) {
+        final Map<String, dynamic> mappedResponse = json.decode(response.body);
+        final ApiResponse<OtpPasswordResetResponse> passwordRestResponse =
+            ApiResponse.fromJson(
+                mappedResponse, OtpPasswordResetResponse.fromJson);
+
+        logger.i(
+            'password reset response succesful: ${passwordRestResponse.isSuccess}');
+        return passwordRestResponse;
+      });
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  static Future<ApiResponse<GenericResponse>> generateOtp(
+      String? payload) async {
+    final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/generate-token');
+
+    try {
+      return http.post(url, body: payload, headers: {
+        'Content-Type': 'application/json',
+      }).then((http.Response response) {
+        final Map<String, dynamic> mappedResponse = json.decode(response.body);
+        final ApiResponse<GenericResponse> generateOtpResponse =
+            ApiResponse.fromJson(mappedResponse, GenericResponse.fromJson);
+
+        logger.i('otp request succesful: ${generateOtpResponse.isSuccess}');
+        return generateOtpResponse;
       });
     } catch (error) {
       rethrow;

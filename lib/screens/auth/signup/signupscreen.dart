@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:rzume/model/enums.dart';
@@ -5,10 +7,12 @@ import 'package:rzume/model/response_payload.dart';
 import 'package:rzume/widgets/auth_page_layout.dart';
 import 'package:rzume/widgets/helper_functions.dart';
 
+import '../../../model/misc-type.dart';
 import '../../../model/request_payload.dart';
 import '../../../model/widgets-arguments.dart';
 import '../../../services/api_provider.dart';
 import '../../../services/api_service.dart';
+import '../../../storage/global_values.dart';
 import '../../../ui/cus_outline_button.dart';
 import '../../../widgets/custom_form.dart';
 
@@ -44,7 +48,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
       // Navigator.pushNamed(context, '/create-password');
     }
 
-    navigateToOtpPage(String email) {
+    Future<bool> otpValidationFunction(
+      String mailValidationPayload,
+    ) async {
+      HelperFunctions.showLoader(context);
+      try {
+        final SigninResponse? signinResponse = await apiService.sendRequest(
+            httpFunction: AuthAPIProvider.validateUser,
+            payload: mailValidationPayload,
+            context: context);
+        if (context.mounted) {
+          HelperFunctions.closeLoader(context);
+        }
+
+        if (signinResponse == null) {
+          return false;
+        }
+
+        final IUser user = IUser.fromJson(signinResponse.user);
+
+        if (signinResponse.token != "") {
+          if (context.mounted) {
+            GlobalValues.setLoginStatus(true, signinResponse.token);
+            logger.i('token saved succesfully');
+          }
+        }
+        return true;
+      } catch (error) {
+        if (context.mounted) {
+          HelperFunctions.closeLoader(context);
+        }
+        return false;
+      }
+    }
+
+    navigateToOtpPage(String email, String password) {
       final Widget emailScreenText = Column(
         children: [
           Text("Verify Email", style: Theme.of(context).textTheme.titleMedium!),
@@ -72,26 +110,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ],
       );
 
-      Navigator.pushNamed(context, '/otp-verification',
-          arguments: OtpVerificationScreenArg(
-              screenText: emailScreenText, mail: email));
+      late ValidateUserPayload validateUserPayload =
+          ValidateUserPayload(email: email, password: password);
+
+      Navigator.pushNamed(
+        context,
+        '/otp-verification',
+        arguments: OtpVerificationScreenArg(
+            screenText: emailScreenText,
+            mail: email,
+            otpValidationFunction: otpValidationFunction,
+            redirectPage: "/home",
+            payload: validateUserPayload,
+            action: "Signup"),
+      );
     }
 
     Future<void> signup(String email, String password) async {
-      final payload = SignupRequest(email: email, password: password);
+      final payload = SignupRequestPayload(email: email, password: password);
       HelperFunctions.showLoader(context);
       try {
         final SignupResponse? signupResponse = await apiService.sendRequest(
-            httpFunction: APIProvider.signup,
+            httpFunction: AuthAPIProvider.signup,
             payload: payload.toJson(),
             context: context);
-        logger.i(signupResponse);
         if (context.mounted) {
           HelperFunctions.closeLoader(context);
         }
 
         if (signupResponse != null && signupResponse.isCreated) {
-          // navigateToOtpPage(email);
+          navigateToOtpPage(email, password);
         }
       } catch (error) {
         if (context.mounted) {

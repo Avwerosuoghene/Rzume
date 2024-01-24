@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:rzume/model/widgets-arguments.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
@@ -7,8 +8,12 @@ import 'package:rzume/widgets/auth_page_layout.dart';
 
 import '../../model/data.dart';
 import '../../model/misc-type.dart';
+import '../../model/request_payload.dart';
+import '../../services/api_provider.dart';
+import '../../services/api_service.dart';
 import '../../widgets/counter_notifier.dart';
 import '../../ui/loader.dart';
+import '../../widgets/helper_functions.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   const OtpVerificationScreen({super.key});
@@ -27,6 +32,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   ];
 
   final CounterNotifier _counter = CounterNotifier();
+  final APIService apiService = APIService();
+
+  final logger = Logger(
+      printer:
+          PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
 
   @override
   void initState() {
@@ -39,14 +49,56 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     return formattedValue;
   }
 
-  void otpConfirmation() {
-    _counter.stopTimer();
+  void otpConfirmation() async {
+    context.read<CounterNotifier>().stopTimer();
+    // _counter.stopTimer();
     _form.currentState!.save();
 
-    navigateToAuthScreen();
-    Future.delayed(const Duration(seconds: 10), () {
-      Navigator.pop(context);
-    });
+    String enteredValue = "";
+
+    for (var value in verificationFormFields) {
+      enteredValue += value.enteredValue.toString();
+    }
+
+    final args =
+        ModalRoute.of(context)!.settings.arguments as OtpVerificationScreenArg;
+
+    bool validationResponse = await callValidationFunction(
+        args.payload, enteredValue, args.otpValidationFunction);
+
+    if (validationResponse == true && context.mounted) {
+      Navigator.pushNamed(context, args.redirectPage);
+    }
+  }
+
+  Future<bool> callValidationFunction(
+      dynamic validationPayload,
+      String enteredValue,
+      Future<bool> Function(String value) otpValidationFunction) async {
+    if (validationPayload is ValidateUserPayload) {
+      final ValidateUserPayload validateUserPayload = ValidateUserPayload(
+          email: validationPayload.email,
+          password: validationPayload.password,
+          otpValue: enteredValue);
+
+      bool response = await otpValidationFunction(validateUserPayload.toJson());
+
+      return response;
+    }
+    if (validationPayload is OtpPasswordResetPayload) {
+      final OtpPasswordResetPayload otpPasswordResetPayload =
+          OtpPasswordResetPayload(
+              email: validationPayload.email,
+              password: validationPayload.password,
+              otpValue: enteredValue);
+
+      bool response =
+          await otpValidationFunction(otpPasswordResetPayload.toJson());
+
+      return response;
+    } else {
+      return false;
+    }
   }
 
   void navigateToAuthScreen() {
@@ -61,8 +113,30 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         });
   }
 
-  void resendOtpConfirmation() {
-    context.read<CounterNotifier>().startTimer();
+  void resendOtpConfirmation() async {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as OtpVerificationScreenArg;
+
+    try {
+      final payload =
+          GenerateOtpPayload(email: args.mail, purpose: args.action);
+      HelperFunctions.showLoader(context);
+      final Map<String, dynamic>? response = await apiService.sendRequest(
+          httpFunction: AuthAPIProvider.generateOtp,
+          payload: payload.toJson(),
+          context: context);
+
+      if (context.mounted) {
+        HelperFunctions.closeLoader(context);
+      }
+      if (response == null && context.mounted) {
+        context.read<CounterNotifier>().startTimer();
+      }
+    } catch (error) {
+      if (context.mounted) {
+        HelperFunctions.closeLoader(context);
+      }
+    }
   }
 
   @override
