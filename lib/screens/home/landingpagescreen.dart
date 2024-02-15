@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rzume/model/enums.dart';
 
-import '../../model/data.dart';
+import '../../model/user_data.dart';
 import '../../model/misc-type.dart';
 import '../../ui/custom_form_field.dart';
 import '../../ui/bell_icon.dart';
@@ -110,7 +110,7 @@ class _LandingPageScreen extends State<LandingPageScreen>
                   child: CustomFormField(
                     formHint: searchField.formHint,
                     formLabel: searchField.formLabel,
-                    formPreficIcon: searchField.formPreficIcon,
+                    formPrefixIcon: searchField.formPrefixIcon,
                     inputValue: searchField.enteredInputSet,
                     showSuffixIcon: searchField.showSuffixIcon,
                     validatorFunction: searchInputValidator,

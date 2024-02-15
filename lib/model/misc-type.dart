@@ -17,7 +17,7 @@ class ICustomFormField {
   ICustomFormField({
     required this.formHint,
     required this.formLabel,
-    required this.formPreficIcon,
+    required this.formPrefixIcon,
     // required this.validatorLogic,
     required this.showSuffixIcon,
     this.keyboardType,
@@ -25,7 +25,7 @@ class ICustomFormField {
 
   final String formHint;
   final String formLabel;
-  final String formPreficIcon;
+  final String formPrefixIcon;
   final TextInputType? keyboardType;
   final bool showSuffixIcon;
   // final String? Function(String? value) validatorLogic;
@@ -40,6 +40,11 @@ class ICustomFormField {
 class ICustomFormTypes {
   ICustomFormTypes(
       {required this.email,
+      required this.studycourse,
+      required this.company,
+      required this.designation,
+      required this.firstname,
+      required this.lastname,
       required this.password,
       required this.confirmPassword,
       // required this.defaultPass,
@@ -49,6 +54,12 @@ class ICustomFormTypes {
       required this.otpInputVal4,
       required this.search});
   final ICustomFormField email;
+  final ICustomFormField studycourse;
+  final ICustomFormField company;
+  final ICustomFormField designation;
+
+  final ICustomFormField firstname;
+  final ICustomFormField lastname;
   final ICustomFormField password;
   final ICustomFormField confirmPassword;
   // final ICustomFormField defaultPass;
@@ -61,17 +72,33 @@ class ICustomFormTypes {
 
 class IEducation {
   IEducation(
-      {required this.id,
+      {this.id,
       required this.institutionName,
       required this.courseOfStudy,
-      required this.grade,
-      required this.yeardOfGraduarion});
+      this.grade,
+      required this.yearOfGraduation});
 
-  final String id;
+  final String? id;
   final String institutionName;
   final String courseOfStudy;
-  final String grade;
-  final DateTime yeardOfGraduarion;
+  final String? grade;
+  final DateTime yearOfGraduation;
+}
+
+class IExperience {
+  IExperience({
+    required this.industry,
+    required this.company,
+    required this.designation,
+    required this.startDate,
+    required this.endDate,
+  });
+
+  final String industry;
+  final String company;
+  final String designation;
+  final DateTime startDate;
+  final DateTime endDate;
 }
 
 class IApplication {
@@ -171,3 +198,10 @@ class ITimer {
 
 typedef MyBuilder = void Function(
     BuildContext context, void Function() methodFromChild);
+
+class DropdownItem {
+  final String value;
+  final String label;
+
+  DropdownItem(this.value, this.label);
+}

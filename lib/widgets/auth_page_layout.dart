@@ -5,11 +5,16 @@ class AuthPageLayout extends StatelessWidget {
       {super.key,
       required this.pageContent,
       this.footerText,
+      this.crossAxisAlignment = CrossAxisAlignment.center,
+      this.backgroundColor = Colors.white,
       this.showBacknav = true});
+
+  final Color backgroundColor;
 
   final Widget pageContent;
   final Widget? footerText;
   final bool showBacknav;
+  final dynamic crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class AuthPageLayout extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: backgroundColor,
         automaticallyImplyLeading: false,
         leading: showBacknav
             ? IconButton(
@@ -33,15 +38,19 @@ class AuthPageLayout extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.white,
+          color: backgroundColor,
           width: MediaQuery.of(context).size.width,
           height: availableHeight,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             child: Column(
+              crossAxisAlignment: crossAxisAlignment,
               children: [
-                pageContent,
-                const Spacer(),
+                SizedBox(
+                  child: ListView(children: [pageContent]),
+                  height: MediaQuery.of(context).size.height - 250,
+                ),
+                Spacer(),
                 if (footerText != null)
                   Column(
                     children: [

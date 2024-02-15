@@ -7,7 +7,7 @@
 //     super.key,
 //     required this.formHint,
 //     required this.formLabel,
-//     required this.formPreficIcon,
+//     required this.formPrefixIcon,
 //     required this.validatorFunction,
 //     required this.inputValue,
 //     TextInputType? keyboardType,
@@ -18,7 +18,7 @@
 
 //   final String formHint;
 //   final String formLabel;
-//   final String formPreficIcon;
+//   final String formPrefixIcon;
 //   final String? Function(String? value) validatorFunction;
 //   final TextInputType? keyboardType;
 //   final void Function(String? value) inputValue;
@@ -72,7 +72,7 @@
 //               // padding: const EdgeInsets.symmetric(horizontal: 8.0),
 //               height: 30,
 //               child: Image.asset(
-//                 widget.formPreficIcon,
+//                 widget.formPrefixIcon,
 //                 height: 20,
 //               ),
 //             ),

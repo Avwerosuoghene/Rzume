@@ -7,7 +7,7 @@ class CustomFormField extends StatefulWidget {
       {super.key,
       required this.formHint,
       required this.formLabel,
-      required this.formPreficIcon,
+      required this.formPrefixIcon,
       required this.validatorFunction,
       required this.inputValue,
       TextInputType? keyboardType,
@@ -19,7 +19,7 @@ class CustomFormField extends StatefulWidget {
 
   final String formHint;
   final String formLabel;
-  final String formPreficIcon;
+  final String formPrefixIcon;
   final String? Function(String? value) validatorFunction;
   final TextInputType? keyboardType;
   final void Function(String? value) inputValue;
@@ -72,21 +72,20 @@ class _CustomFormFieldState extends State<CustomFormField> {
                 borderRadius: BorderRadius.circular(roundness)),
             label: Text(
               widget.formLabel,
-              style: const TextStyle(
-                  color: Color.fromARGB(255, 98, 98, 98),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w200),
+              style: Theme.of(context).inputDecorationTheme.hintStyle,
             ),
             prefixIconConstraints:
                 const BoxConstraints(minHeight: 0, minWidth: 0),
-            prefixIcon: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              height: 30,
-              child: Image.asset(
-                widget.formPreficIcon,
-                height: 10,
-              ),
-            ),
+            prefixIcon: widget.formPrefixIcon != ''
+                ? Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    height: 30,
+                    child: Image.asset(
+                      widget.formPrefixIcon,
+                      height: 10,
+                    ),
+                  )
+                : null,
             suffixIcon: widget.showSuffixIcon
                 ? IconButton(
                     icon: Icon(
@@ -102,6 +101,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
                     },
                   )
                 : null),
+       
+       
         validator:
             widget.showValidator == true ? widget.validatorFunction : null,
         onSaved: widget.inputValue,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rzume/model/data.dart';
+import 'package:rzume/model/user_data.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/widgets-arguments.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
@@ -85,7 +85,7 @@ class PasswordResetScreen extends StatelessWidget {
           child: CustomFormField(
               formHint: emailFormData.formHint,
               formLabel: emailFormData.formLabel,
-              formPreficIcon: emailFormData.formPreficIcon,
+              formPrefixIcon: emailFormData.formPrefixIcon,
               inputValue: emailFormData.enteredInputSet,
               showSuffixIcon: emailFormData.showSuffixIcon,
               validatorFunction: emailValidator,

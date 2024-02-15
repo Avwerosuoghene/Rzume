@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rzume/model/data.dart';
+import 'package:rzume/model/user_data.dart';
 import 'package:rzume/model/enums.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/widgets-arguments.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
+import 'package:rzume/widgets/helper_functions.dart';
 
 import '../ui/custom_form_field.dart';
 
@@ -39,19 +40,19 @@ class _CustomFormState extends State<CustomForm> {
 
   late String? Function(String? value) validator;
 
-  String? passwordValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your password';
-    }
-    return null;
-  }
+  // String? passwordValidator(String? value) {
+  //   if (value == null || value.isEmpty) {
+  //     return 'Please enter your password';
+  //   }
+  //   return null;
+  // }
 
-  String? emailValidator(String? value) {
-    if (value == null || value.trim().isEmpty || !value.contains('@')) {
-      return 'Please enter a valid email address';
-    }
-    return null;
-  }
+  // String? emailValidator(String? value) {
+  //   if (value == null || value.trim().isEmpty || !value.contains('@')) {
+  //     return 'Please enter a valid email address';
+  //   }
+  //   return null;
+  // }
 
   void submitForm() {
     final isValid = _form.currentState!.validate();
@@ -77,9 +78,9 @@ class _CustomFormState extends State<CustomForm> {
           signupFormFields[signupFormFields.length - 1].formHint;
 
       if (formItem.formLabel == 'Password') {
-        validator = passwordValidator;
+        validator = HelperFunctions.passwordValidator;
       } else {
-        validator = emailValidator;
+        validator = HelperFunctions.emailValidator;
       }
 
       return Column(
@@ -87,7 +88,7 @@ class _CustomFormState extends State<CustomForm> {
           CustomFormField(
             formHint: formItem.formHint,
             formLabel: formItem.formLabel,
-            formPreficIcon: formItem.formPreficIcon,
+            formPrefixIcon: formItem.formPrefixIcon,
             inputValue: formItem.enteredInputSet,
             showSuffixIcon: formItem.showSuffixIcon,
             validatorFunction: validator,

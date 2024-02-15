@@ -6,7 +6,7 @@ import 'package:rzume/model/widgets-arguments.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/widgets/auth_page_layout.dart';
 
-import '../../model/data.dart';
+import '../../model/user_data.dart';
 import '../../model/misc-type.dart';
 import '../../model/request_payload.dart';
 import '../../services/api_provider.dart';
@@ -80,7 +80,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           email: validationPayload.email,
           password: validationPayload.password,
           otpValue: enteredValue);
-
       bool response = await otpValidationFunction(validateUserPayload.toJson());
 
       return response;

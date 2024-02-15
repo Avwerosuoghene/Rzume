@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
-import '../../model/data.dart';
+import '../../model/user_data.dart';
 import '../../ui/progress_bar.dart';
 import '../../widgets/horizontal_list.dart';
 import '../../widgets/start_screen_message.dart';
@@ -29,12 +29,8 @@ class _StartScreenState extends State<StartScreen> {
   }
 
   void navigateToAuthScreen() {
-    // context.read<MiscNotifer>().triggerSuccess('yes');
-    // await Future.delayed(const Duration(seconds: 5));
-    // _counter.startTimer();
-    // _miscNotifier.triggerInfoDialog(treu);
-    // _miscNotifier.triggerOverlay();
-    Navigator.pushNamed(context, '/signin');
+    // Navigator.pushNamed(context, '/signin');
+    Navigator.pushNamed(context, '/onboarding');
   }
 
   @override

@@ -10,6 +10,7 @@ import 'package:rzume/widgets/auth_page_layout.dart';
 
 import '../../../model/request_payload.dart';
 import '../../../model/response_payload.dart';
+import '../../../model/widgets-arguments.dart';
 import '../../../services/api_provider.dart';
 import '../../../services/api_service.dart';
 import '../../../ui/loader.dart';
@@ -29,6 +30,84 @@ class _SigninScreenState extends State<SigninScreen> {
           PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
   final APIService apiService = APIService();
 
+  Future<bool> otpValidationFunction(
+    String mailValidationPayload,
+  ) async {
+    HelperFunctions.showLoader(context);
+    try {
+      final SigninResponse? signinResponse = await apiService.sendRequest(
+          httpFunction: AuthAPIProvider.validateUser,
+          payload: mailValidationPayload,
+          context: context);
+      if (context.mounted) {
+        HelperFunctions.closeLoader(context);
+      }
+
+      if (signinResponse == null) {
+        return false;
+      }
+
+      final IUser user = IUser.fromJson(signinResponse.user);
+
+      if (signinResponse.token != "") {
+        if (context.mounted) {
+          GlobalValues.setLoginStatus(true, signinResponse.token);
+          logger.i('token saved succesfully');
+        }
+      }
+      return true;
+    } catch (error) {
+      if (context.mounted) {
+        HelperFunctions.closeLoader(context);
+      }
+      return false;
+    }
+  }
+
+  navigateToOtpPage(String email, String password) {
+    final Widget emailScreenText = Column(
+      children: [
+        Text("Verify Email", style: Theme.of(context).textTheme.titleMedium!),
+        Container(
+            width: 300,
+            margin: const EdgeInsets.only(top: 12, bottom: 15),
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: 'Please enter the 4 digit code sent to your mail ',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(height: 1.5),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: email,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.w500, color: Colors.black),
+                  ),
+                  const TextSpan(text: ' to verify your account!'),
+                ],
+              ),
+            )),
+      ],
+    );
+
+    late ValidateUserPayload validateUserPayload =
+        ValidateUserPayload(email: email, password: password);
+
+    Navigator.pushNamed(
+      context,
+      '/otp-verification',
+      arguments: OtpVerificationScreenArg(
+          screenText: emailScreenText,
+          mail: email,
+          otpValidationFunction: otpValidationFunction,
+          redirectPage: "/home",
+          payload: validateUserPayload,
+          action: "Signup"),
+    );
+  }
+
   Future<void> signin(String email, String password) async {
     final payload = LoginRequestPayload(username: email, password: password);
     HelperFunctions.showLoader(context);
@@ -43,11 +122,17 @@ class _SigninScreenState extends State<SigninScreen> {
       return;
     }
 
-    final IUser user = IUser.fromJson(response!.user);
+    // final IUser user = IUser.fromJson(response!.user);
+
+    if (response.token == "" && !response.emailConfirmed) {
+      navigateToOtpPage(email, password);
+    }
 
     if (response.token != "") {
       if (context.mounted) {
         GlobalValues.setLoginStatus(true, response.token);
+        logger.i(response.token);
+
         logger.i('token saved succesfully');
         Navigator.pushNamed(context, '/home');
       }

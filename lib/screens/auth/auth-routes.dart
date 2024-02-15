@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rzume/screens/auth/on-boarding/onboardingscreen.dart';
 import 'package:rzume/screens/auth/password-reset/create-passwordscreen.dart';
 import 'package:rzume/screens/auth/password-reset/password-resetscreen.dart';
 import 'package:rzume/screens/auth/signin/signinscreen.dart';
@@ -10,5 +11,6 @@ Map<String, Widget Function(BuildContext)> authRoutes = {
   '/verified': (context) => const VerifiedScreen(),
   '/signin': (context) => const SigninScreen(),
   '/reset-password': (context) => PasswordResetScreen(),
-  '/create-password': (context) => const CreatePasswordScreen()
+  '/create-password': (context) => const CreatePasswordScreen(),
+  '/onboarding': (context) => const OnboardingScreen()
 };

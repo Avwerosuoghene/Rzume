@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class CusOutlineButton extends StatelessWidget {
   const CusOutlineButton(
       {super.key,
-      required this.icon,
+      this.icon,
       required this.buttonText,
       required this.color,
       required this.onPressedFunction});
 
-  final String icon;
+  final String? icon;
   final String buttonText;
   final Color color;
   final void Function() onPressedFunction;
@@ -34,10 +34,12 @@ class CusOutlineButton extends StatelessWidget {
         child: SizedBox(
           width: double.infinity,
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Image.asset(
-              icon,
-              width: 60,
-            ),
+            icon != null
+                ? Image.asset(
+                    icon!,
+                    width: 60,
+                  )
+                : Container(),
             Text(
               buttonText,
               style:

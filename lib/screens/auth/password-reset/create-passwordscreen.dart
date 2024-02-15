@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:rzume/model/data.dart';
+import 'package:rzume/model/user_data.dart';
 import 'package:rzume/model/request_payload.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/ui/custom_form_field.dart';
@@ -220,7 +220,7 @@ class CreatePasswordScreen extends StatelessWidget {
             CustomFormField(
                 formHint: formItem.formHint,
                 formLabel: formItem.formLabel,
-                formPreficIcon: formItem.formPreficIcon,
+                formPrefixIcon: formItem.formPrefixIcon,
                 inputValue: formItem.enteredInputSet,
                 showSuffixIcon: formItem.showSuffixIcon,
                 validatorFunction: validator,

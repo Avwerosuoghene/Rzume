@@ -17,7 +17,11 @@ final lightThemeData = ThemeData().copyWith(
     useMaterial3: true,
     colorScheme: kColorScheme,
     inputDecorationTheme: const InputDecorationTheme(
-        hintStyle: TextStyle(fontSize: 12, color: Colors.black26)),
+      hintStyle: TextStyle(
+          fontSize: 12,
+          color: Color.fromRGBO(0x86, 0x86, 0x86, 0.5),
+          fontFamily: 'GoogleFonts.inter'),
+    ),
     textTheme: GoogleFonts.interTextTheme().copyWith(
       titleSmall: GoogleFonts.inter(
           fontSize: 22, color: Colors.black, fontWeight: FontWeight.w500),
@@ -33,5 +37,26 @@ final lightThemeData = ThemeData().copyWith(
           GoogleFonts.inter(fontWeight: FontWeight.w600, color: Colors.black26),
     ));
 
-final darkThemeData =
-    ThemeData().copyWith(useMaterial3: true, colorScheme: kDarkColorScheme);
+final darkThemeData = ThemeData().copyWith(
+    useMaterial3: true,
+    colorScheme: kColorScheme,
+    inputDecorationTheme: const InputDecorationTheme(
+        hintStyle: TextStyle(fontSize: 12, color: Colors.black26)),
+    textTheme: GoogleFonts.interTextTheme().copyWith(
+      titleSmall: GoogleFonts.inter(
+          fontSize: 22, color: Colors.black, fontWeight: FontWeight.w500),
+      titleMedium: GoogleFonts.inter(
+          fontWeight: FontWeight.w500, fontSize: 26, color: Colors.black),
+      titleLarge: GoogleFonts.inter(
+          fontWeight: FontWeight.w900, fontSize: 30, color: Colors.black),
+      bodySmall: GoogleFonts.inter(
+          fontWeight: FontWeight.w300,
+          color: const Color.fromARGB(122, 0, 0, 0),
+          fontSize: 12),
+      bodyMedium: GoogleFonts.inter(
+          fontWeight: FontWeight.w400,
+          color: const Color.fromARGB(122, 0, 0, 0),
+          fontSize: 14),
+      bodyLarge:
+          GoogleFonts.inter(fontWeight: FontWeight.w600, color: Colors.black26),
+    ));
