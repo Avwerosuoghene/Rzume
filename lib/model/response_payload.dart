@@ -74,6 +74,8 @@ class SignupResponse {
   }
 }
 
+
+
 class OtpPasswordResetResponse {
   OtpPasswordResetResponse({required this.isSuccess, required this.message});
 

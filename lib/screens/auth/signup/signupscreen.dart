@@ -10,7 +10,7 @@ import 'package:rzume/widgets/helper_functions.dart';
 import '../../../model/misc-type.dart';
 import '../../../model/request_payload.dart';
 import '../../../model/widgets-arguments.dart';
-import '../../../services/api_provider.dart';
+import '../../../services/auth_api_provider.dart';
 import '../../../services/api_service.dart';
 import '../../../storage/global_values.dart';
 import '../../../ui/cus_outline_button.dart';

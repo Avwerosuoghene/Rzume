@@ -9,7 +9,7 @@ import 'package:rzume/widgets/auth_page_layout.dart';
 import '../../model/user_data.dart';
 import '../../model/misc-type.dart';
 import '../../model/request_payload.dart';
-import '../../services/api_provider.dart';
+import '../../services/auth_api_provider.dart';
 import '../../services/api_service.dart';
 import '../../widgets/counter_notifier.dart';
 import '../../ui/loader.dart';

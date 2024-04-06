@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 
 class LoginRequestPayload {
   LoginRequestPayload({required this.username, required this.password});
@@ -89,6 +92,75 @@ class OtpPasswordResetPayload {
 
   Map<String, dynamic> toMap() {
     return {'Email': email, 'Password': password, 'OtpValue': otpValue};
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
+  }
+}
+
+class OnboardingFirstStagePayload implements ConvertibleToMap {
+  OnboardingFirstStagePayload(
+      {required this.firstName, required this.lastName});
+
+  final String firstName;
+  final String lastName;
+
+  Map<String, dynamic> toMap() {
+    return {'FirstName': firstName, 'LastName': lastName};
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
+  }
+}
+
+abstract class ConvertibleToMap {
+  Map<String, dynamic> toMap();
+}
+
+class OnboardingSecondStagePayload implements ConvertibleToMap {
+  OnboardingSecondStagePayload(
+      {required this.fileBytes, required this.fileName});
+
+  // final PlatformFile file;
+  final Uint8List fileBytes;
+  final String fileName;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {'FileBytes': fileBytes, 'FileName': fileName};
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
+  }
+}
+
+// Convert PlatformFile to a Map
+Map<String, dynamic> _fileToJson(PlatformFile file) {
+  return {
+    'name': file.name,
+    'path': file.path,
+    'size': file.size,
+    'extension': file.extension,
+    // Add any other properties you need
+  };
+}
+
+class OnboardUserPayload<T extends ConvertibleToMap> {
+  OnboardUserPayload(
+      {required this.stage, required this.onboardUserInfo, required this.mail});
+  final int stage;
+  final String mail;
+  final T onboardUserInfo;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'OnBoardingStage': stage,
+      'OnboardUserPayload': onboardUserInfo.toMap(),
+      'UserMail': mail
+    };
   }
 
   String toJson() {

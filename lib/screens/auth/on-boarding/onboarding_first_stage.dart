@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rzume/model/misc-type.dart';
+import 'package:rzume/model/request_payload.dart';
+import 'package:rzume/model/response_payload.dart';
 import 'package:rzume/model/user_data.dart';
+import 'package:rzume/services/api_service.dart';
+import 'package:rzume/services/profile_mngmnt_api_provideR.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/ui/custom_form_field.dart';
 import 'package:rzume/widgets/helper_functions.dart';
@@ -17,6 +21,8 @@ class OnboardingFirstStage extends StatelessWidget {
     formData.firstname,
     formData.lastname
   ];
+
+  final APIService apiService = APIService();
 
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
@@ -45,19 +51,46 @@ class OnboardingFirstStage extends StatelessWidget {
     }).toList();
   }
 
-  void submitForm() async {
-    final isValid = _form.currentState!.validate();
-
-    if (!isValid) {
-      return;
-    }
-
-    _form.currentState!.save();
-    proceedFunction(1);
-  }
-
   @override
   Widget build(BuildContext context) {
+    void submitForm() async {
+      final isValid = _form.currentState!.validate();
+
+      if (!isValid) {
+        return;
+      }
+
+      _form.currentState!.save();
+      final BuildContext currentContext = context;
+
+      try {
+        if (!context.mounted) {
+          return;
+        }
+        OnboardUserPayload<OnboardingFirstStagePayload> onboarUserPayload =
+            OnboardUserPayload<OnboardingFirstStagePayload>(
+                mail: 'kesuion1@gmail.com',
+                stage: 0,
+                onboardUserInfo: OnboardingFirstStagePayload(
+                    firstName: "Test", lastName: "Test"));
+        HelperFunctions.showLoader(currentContext);
+
+        final GenericResponse? onboardingResponse =
+            await apiService.sendRequest(
+                httpFunction:
+                    ProfileManagementAPIProvider.secondStageUserOnboard,
+                payload: onboarUserPayload.toJson(),
+                context: currentContext);
+        if (context.mounted) {
+          HelperFunctions.closeLoader(context);
+        }
+      } catch (error) {
+        print(error);
+      }
+
+      proceedFunction(1);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

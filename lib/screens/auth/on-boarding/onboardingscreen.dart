@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rzume/screens/auth/on-boarding/onboarding_first_stage.dart';
 import 'package:rzume/screens/auth/on-boarding/onboarding_fourth_stage.dart';
+import 'package:rzume/screens/auth/on-boarding/onboarding_second_stage.dart';
 import 'package:rzume/screens/auth/on-boarding/onboarding_third_stage.dart';
 
 import '../../../widgets/auth_page_layout.dart';
@@ -30,7 +32,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final pageContent =
-        OnboardingFourthStage(proceedFunction: proceedToNextStep);
+        // OnboardingFirstStage(proceedFunction: proceedToNextStep);
+        OnboardingSecondStage(proceedFunction: proceedToNextStep);
     return AuthPageLayout(
       pageContent: pageContent,
       showBacknav: true,
