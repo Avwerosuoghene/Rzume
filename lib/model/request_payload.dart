@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:rzume/model/enums.dart';
 
 class LoginRequestPayload {
   LoginRequestPayload({required this.username, required this.password});
@@ -121,15 +122,16 @@ abstract class ConvertibleToMap {
 
 class OnboardingSecondStagePayload implements ConvertibleToMap {
   OnboardingSecondStagePayload(
-      {required this.fileBytes, required this.fileName});
+      {required this.fileBytes, required this.fileName, required this.fileCat});
 
   // final PlatformFile file;
-  final Uint8List fileBytes;
+  final String fileBytes;
   final String fileName;
+  final String fileCat;
 
   @override
   Map<String, dynamic> toMap() {
-    return {'FileBytes': fileBytes, 'FileName': fileName};
+    return {'FileBytes': fileBytes, 'FileName': fileName, 'FileCat': fileCat};
   }
 
   String toJson() {

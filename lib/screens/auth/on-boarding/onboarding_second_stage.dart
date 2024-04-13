@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rzume/model/api_routes.dart';
+import 'package:rzume/model/enums.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/request_payload.dart';
 import 'package:rzume/model/response_payload.dart';
@@ -29,7 +30,7 @@ class OnboardingSecondStage extends StatelessWidget {
   final void Function(int stepNumber) proceedFunction;
 
   FilePickerResult? filePickerResult;
-  String? _fileName;
+  late String _fileName;
   late PlatformFile _pickedFile;
   File? fileToDisplay;
   final logger = Logger(
@@ -82,125 +83,52 @@ class OnboardingSecondStage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void convertFileToPdf(String base64String) async {
-      List<int> bytes = base64Decode(base64String);
-      // final directory = Directory('decoded_documents');
-      // if (!await directory.exists()) {
-      //   await directory.create(recursive: true);
-      // }
-      String? directory = (await getExternalStorageDirectory())!.path;
-      logger.i('$directory/');
-
-      File file = await File('$directory/decoded_file.pdf').writeAsBytes(bytes);
-
-      // await file.writeAsBytes(bytes);
-      logger.i(file.path);
-    }
-
     Future<void> onFileSelect() async {
       try {
         final BuildContext currentContext = context;
-        final permissionStatus = await Permission.storage.status;
-        if (permissionStatus.isDenied) {
-          await Permission.storage.request();
 
-          if (permissionStatus.isDenied) {
-            await openAppSettings();
+        FilePickerResult? result = await HelperFunctions.filePicker();
+
+        if (result != null) {
+          _pickedFile = result.files.first;
+          _fileName = _pickedFile.name;
+          logger.i(_fileName);
+          if (_pickedFile.extension!.toLowerCase() != 'pdf') {
+            return;
           }
-        } else if (permissionStatus.isPermanentlyDenied) {
-          await openAppSettings();
-        } else {
-          var result = await FilePicker.platform.pickFiles(
-              withReadStream: true,
-              type: FileType.custom,
-              allowedExtensions: ['pdf'],
-              allowMultiple: false);
+          File filePath = File(_pickedFile.path!);
+          String base64String = await HelperFunctions.encodeFile(filePath);
 
-          if (result != null) {
-            _pickedFile = result.files.first;
-            _fileName = _pickedFile.name;
-            logger.i(_fileName);
-            if (_pickedFile.extension!.toLowerCase() != 'pdf') {
-              // Invalid file type, show an error message or handle it accordingly
-              return;
-            }
-            File filePath = File(_pickedFile.path!);
-            List<int> bytes = await filePath.readAsBytes();
-            String base64String = base64Encode(bytes);
-            logger.e(base64String);
-
-            // convertFileToPdf(base64String);
-
-            FormData formData = FormData.fromMap({
-              'file': await MultipartFile.fromFile(_pickedFile.path!),
-            });
-
-            // Create Dio instance
-            final dio = Dio();
-
-            // Make POST request
-            final response = await dio.post(
-              '${APIRoutes.profileServiceUrl}/upload',
-              data: formData,
-              onSendProgress: (sent, total) {
-                print("Progress: ${(sent / total) * 100}%");
-              },
-            );
-
-//             final dio = Dio(BaseOptions(
-//               baseUrl: '${APIRoutes.profileServiceUrl}/upload',
-//               // headers: {'Authorization': 'Bearer'},
-//             ));
-//             final uploader = ChunkedUploader(dio);
-//             logger.f('${APIRoutes.profileServiceUrl}/upload');
-
-// // using data stream
-//             final response = await uploader.upload(
-//               fileName: _pickedFile.name,
-//               fileSize: _pickedFile.size,
-//               fileDataStream: _pickedFile.readStream!,
-//               maxChunkSize: 500000,
-//               path: '/file',
-//               onUploadProgress: (progress) => print(progress),
-//             );
-
-            logger.i(response);
-
-            if (!context.mounted) {
-              return;
-            }
-            //           OnboardUserPayload<OnboardingSecondStagePayload> onboarUserPayload =
-            //               OnboardUserPayload<OnboardingSecondStagePayload>(
-            //                   mail: 'kesuion1@gmail.com',
-            //                   stage: 1,
-            //                     onboardUserInfo:
-            //                       OnboardingSecondStagePayload(fileBytes: _pickedFile.bytes, )
-            //                   fileBytes: _pickedFile.bytes, // Assuming _pickedFile contains the file bytes
-            // fileName: _pickedFile.name,
-            //                   // onboardUserInfo:
-            //                   //     OnboardingSecondStagePayload(file: _pickedFile)
-
-            //                       )
-            //                       ;
-            // HelperFunctions.showLoader(currentContext);
-
-            // final GenericResponse? onboardingResponse =
-            //     await apiService.sendRequest(
-            //         httpFunction:
-            //             ProfileManagementAPIProvider.secondStageUserOnboard,
-            //         payload: onboarUserPayload.toJson(),
-            //         context: currentContext);
-            // if (context.mounted) {
-            //   HelperFunctions.closeLoader(context);
-            // }
-
-            fileToDisplay = File(_pickedFile.path.toString());
-
-            logger.i('FileName $_pickedFile');
+          if (!context.mounted) {
+            return;
           }
+          OnboardUserPayload<OnboardingSecondStagePayload> onboarUserPayload =
+              OnboardUserPayload<OnboardingSecondStagePayload>(
+                  mail: 'kesuion1@gmail.com',
+                  stage: 1,
+                  onboardUserInfo: OnboardingSecondStagePayload(
+                    fileBytes: base64String,
+                    fileName: _fileName,
+                    fileCat: FileCategory.resume.value,
+                  ));
+          HelperFunctions.showLoader(currentContext);
+
+          final GenericResponse? onboardingResponse =
+              await apiService.sendRequest(
+                  httpFunction:
+                      ProfileManagementAPIProvider.secondStageUserOnboard,
+                  payload: onboarUserPayload.toJson(),
+                  context: currentContext);
+          if (context.mounted) {
+            HelperFunctions.closeLoader(context);
+          }
+
+          fileToDisplay = File(_pickedFile.path.toString());
+
+          logger.i('FileName $_pickedFile');
         }
       } catch (error) {
-        print(error);
+        logger.e(error);
       }
     }
 

@@ -7,6 +7,10 @@ enum Roundness {
   partial,
 }
 
+enum FileCategory {
+  resume,
+}
+
 enum AnimationDuration { long, medium, short }
 
 extension AnimationDurationExtension on AnimationDuration {
@@ -18,6 +22,15 @@ extension AnimationDurationExtension on AnimationDuration {
         return const Duration(milliseconds: 500);
       case AnimationDuration.short:
         return const Duration(milliseconds: 500);
+    }
+  }
+}
+
+extension FileCategoryExtension on FileCategory {
+  String get value {
+    switch (this) {
+      case FileCategory.resume:
+        return 'Resume';
     }
   }
 }

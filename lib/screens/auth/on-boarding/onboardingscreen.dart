@@ -33,7 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     final pageContent =
         // OnboardingFirstStage(proceedFunction: proceedToNextStep);
-        OnboardingSecondStage(proceedFunction: proceedToNextStep);
+        OnboardingThirdStage(proceedFunction: proceedToNextStep);
     return AuthPageLayout(
       pageContent: pageContent,
       showBacknav: true,
