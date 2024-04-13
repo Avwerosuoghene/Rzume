@@ -9,6 +9,7 @@ class CusDropDownButton extends StatefulWidget {
     required this.onSelectChangeFunction,
     required this.selectionHint,
     required this.selectionItems,
+    required this.searchHint,
     this.roundnessDegree = Roundness.partial,
     Key? key,
   }) : super(key: key);
@@ -19,6 +20,7 @@ class CusDropDownButton extends StatefulWidget {
   final Roundness? roundnessDegree;
   final String selectionHint;
   final List<String> selectionItems;
+  final String searchHint;
 
   @override
   State<CusDropDownButton> createState() => CusDropDownButtonState();
@@ -26,6 +28,7 @@ class CusDropDownButton extends StatefulWidget {
 
 class CusDropDownButtonState extends State<CusDropDownButton> {
   late List<String> selectionItems;
+  late String searchInputInt;
 
   String? selectedValue;
   final TextEditingController textEditingController = TextEditingController();
@@ -42,7 +45,6 @@ class CusDropDownButtonState extends State<CusDropDownButton> {
   }
 
   void resetForm() {
-    print('reset form called');
     selectedValue = null;
   }
 
@@ -113,15 +115,15 @@ class CusDropDownButtonState extends State<CusDropDownButton> {
                 expands: true,
                 maxLines: null,
                 controller: textEditingController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   isDense: true,
-                  contentPadding: EdgeInsets.symmetric(
+                  contentPadding: const EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 8,
                   ),
-                  hintText: 'Search for an item...',
-                  hintStyle: TextStyle(fontSize: 12),
-                  border: OutlineInputBorder(
+                  hintText: widget.searchHint,
+                  hintStyle: const TextStyle(fontSize: 12),
+                  border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(6)),
                       borderSide: BorderSide(width: 2, color: Colors.red)),
                 ),

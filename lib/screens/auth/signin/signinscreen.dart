@@ -35,10 +35,11 @@ class _SigninScreenState extends State<SigninScreen> {
   ) async {
     HelperFunctions.showLoader(context);
     try {
-      final SigninResponse? signinResponse = await apiService.sendRequest(
-          httpFunction: AuthAPIProvider.validateUser,
-          payload: mailValidationPayload,
-          context: context);
+      final SigninResponse? signinResponse =
+          await apiService.sendRequest<ApiResponse>(
+              httpFunction: AuthAPIProvider.validateUser,
+              payload: mailValidationPayload,
+              context: context);
       if (context.mounted) {
         HelperFunctions.closeLoader(context);
       }
@@ -111,7 +112,7 @@ class _SigninScreenState extends State<SigninScreen> {
   Future<void> signin(String email, String password) async {
     final payload = LoginRequestPayload(username: email, password: password);
     HelperFunctions.showLoader(context);
-    final SigninResponse? response = await apiService.sendRequest(
+    final SigninResponse? response = await apiService.sendRequest<ApiResponse>(
         httpFunction: AuthAPIProvider.login,
         payload: payload.toJson(),
         context: context);

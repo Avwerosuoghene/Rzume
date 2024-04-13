@@ -312,6 +312,7 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
             onSelectChangeFunction: onIndustrySelected,
             selectionHint: "Select Industry",
             selectionItems: selectionItems,
+            searchHint: "Search for industry",
             key: _customDropDownState),
         (submitFormClicked && selectedIndustry == null)
             ? Container(

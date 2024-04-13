@@ -76,7 +76,7 @@ class OnboardingFirstStage extends StatelessWidget {
         HelperFunctions.showLoader(currentContext);
 
         final GenericResponse? onboardingResponse =
-            await apiService.sendRequest(
+            await apiService.sendRequest<ApiResponse>(
                 httpFunction:
                     ProfileManagementAPIProvider.secondStageUserOnboard,
                 payload: onboarUserPayload.toJson(),

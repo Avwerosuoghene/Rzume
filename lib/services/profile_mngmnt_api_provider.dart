@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:chunked_uploader/chunked_uploader.dart';
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
@@ -26,6 +24,23 @@ class ProfileManagementAPIProvider {
 
         logger.i('otp request succesful: ${generateOtpResponse.isSuccess}');
         return generateOtpResponse;
+      });
+    } catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
+
+  static Future<ApiResponse<GenericResponse>> getUniversities(oad) async {
+    final Uri url = Uri.parse('http://universities.hipolabs.com/search');
+    try {
+      return http.get(url, headers: {
+        'Content-Type': 'application/json',
+      }).then((http.Response response) {
+        final dynamic dynamicResponse = response;
+
+        logger.i('universities returned succesful: ${dynamicResponse}');
+        return dynamicResponse;
       });
     } catch (error) {
       print(error);

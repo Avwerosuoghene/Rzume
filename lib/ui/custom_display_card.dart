@@ -60,7 +60,7 @@ class CustomDisplayCard extends StatelessWidget {
               height: 34,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: Color.fromRGBO(217, 217, 217, 1),
+                  color: const Color.fromRGBO(217, 217, 217, 1),
                   borderRadius: BorderRadius.circular(30)),
               child: IconButton(
                 icon: const Icon(Icons.delete_outline),

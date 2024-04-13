@@ -33,19 +33,15 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
   final List<ICustomFormField> educationForm = [
     formData.studycourse,
   ];
-  late List<String> selectionItems = [];
+  late List<String> availableUniversities = [];
 
-  final List<IEducation> educationList = [];
-
-  FocusNode searchFocusNode = FocusNode();
-  FocusNode textFieldFocusNode = FocusNode();
+  final List<IEducation> selectedEducationList = [];
   late SingleValueDropDownController _cnt;
   String? selectedUniversity;
   DateTime? selectedDate;
 
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   bool submitFormClicked = false;
-  // GlobalKey globalKey = GlobalKey();
   final GlobalKey<CusDropDownButtonState> _customDropDownState =
       GlobalKey<CusDropDownButtonState>();
   final GlobalKey<CustomDatePickerState> _customDatePicker =
@@ -65,7 +61,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
 
   void deletItem(int itemIndex) {
     setState(() {
-      educationList.removeAt(itemIndex);
+      selectedEducationList.removeAt(itemIndex);
     });
   }
 
@@ -99,7 +95,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
 
     _form.currentState!.save();
 
-    educationList.add(IEducation(
+    selectedEducationList.add(IEducation(
         institutionName: selectedUniversity!,
         courseOfStudy: educationForm[0].enteredValue,
         yearOfGraduation: selectedDate!));
@@ -108,7 +104,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
   }
 
   handleProceedCall() {
-    if (educationList.isEmpty) {
+    if (selectedEducationList.isEmpty) {
       context
           .read<MiscNotifer>()
           .triggerFailure("Please add a valid education");
@@ -150,7 +146,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
   }
 
   List<Widget> generateEducationList() {
-    return educationList.asMap().entries.map((entry) {
+    return selectedEducationList.asMap().entries.map((entry) {
       final index = entry.key;
       final educationItem = entry.value;
       final cardContent = generateCardInfo(educationItem);
@@ -173,7 +169,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
   @override
   void initState() {
     _cnt = SingleValueDropDownController();
-    selectionItems = [
+    availableUniversities = [
       'A_Item1',
       'A_Item2',
       'A_Item3',
@@ -213,7 +209,8 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
                 CusDropDownButton(
                     onSelectChangeFunction: onUniversitySelected,
                     selectionHint: "Select University",
-                    selectionItems: selectionItems,
+                    selectionItems: availableUniversities,
+                    searchHint: "Search for University",
                     key: _customDropDownState),
                 (submitFormClicked && selectedUniversity == null)
                     ? Container(
@@ -282,7 +279,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
         CusOutlineButton(
           color: const Color.fromRGBO(16, 96, 166, 1.0),
           // icon: 'assets/icons/linkedin_logo.png',
-          buttonText: educationList.isEmpty ? 'Add' : 'Add another',
+          buttonText: selectedEducationList.isEmpty ? 'Add' : 'Add another',
           onPressedFunction: () {
             submitForm("Add");
           },

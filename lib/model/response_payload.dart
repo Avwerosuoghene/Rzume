@@ -74,7 +74,27 @@ class SignupResponse {
   }
 }
 
+// class GetUniversityResponse {
+//   GetUniversityResponse({required this.isCreated});
 
+//   final List<String> webPages;
+//   factory GetUniversityResponse.fromJson(Map<String, dynamic> parsedJson) {
+//     return SignupResponse(
+//       isCreated: parsedJson['isCreated'] as bool,
+//     );
+//   }
+// }
+
+// "web_pages": [
+//             "http://www.aaua.edu.ng/"
+//         ],
+//         "alpha_two_code": "NG",
+//         "state-province": null,
+//         "domains": [
+//             "aaua.edu.ng"
+//         ],
+//         "name": "Adekunle Ajasin University",
+//         "country": "Nigeria"
 
 class OtpPasswordResetResponse {
   OtpPasswordResetResponse({required this.isSuccess, required this.message});
@@ -97,3 +117,13 @@ class GenericResponse {
     return GenericResponse(isSuccess: parsedJson['isSuccess'] as bool);
   }
 }
+
+// class ExternalGenericResponse {
+//   ExternalGenericResponse({required this.content});
+
+//   final bool isSuccess;
+
+//   factory GenericResponse.fromJson(Map<String, dynamic> parsedJson) {
+//     return GenericResponse(isSuccess: parsedJson['isSuccess'] as bool);
+//   }
+// }

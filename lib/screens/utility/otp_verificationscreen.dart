@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:rzume/model/response_payload.dart';
 import 'package:rzume/model/widgets-arguments.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/widgets/auth_page_layout.dart';
@@ -120,10 +121,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       final payload =
           GenerateOtpPayload(email: args.mail, purpose: args.action);
       HelperFunctions.showLoader(context);
-      final Map<String, dynamic>? response = await apiService.sendRequest(
-          httpFunction: AuthAPIProvider.generateOtp,
-          payload: payload.toJson(),
-          context: context);
+      final Map<String, dynamic>? response =
+          await apiService.sendRequest<ApiResponse>(
+              httpFunction: AuthAPIProvider.generateOtp,
+              payload: payload.toJson(),
+              context: context);
 
       if (context.mounted) {
         HelperFunctions.closeLoader(context);

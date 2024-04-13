@@ -57,7 +57,7 @@ class CreatePasswordScreen extends StatelessWidget {
       HelperFunctions.showLoader(context);
       try {
         final OtpPasswordResetResponse? passwordResetResponse =
-            await apiService.sendRequest(
+            await apiService.sendRequest<ApiResponse>(
                 httpFunction: AuthAPIProvider.otpPasswordReset,
                 payload: passwordResetPayload,
                 context: context);
@@ -126,10 +126,11 @@ class CreatePasswordScreen extends StatelessWidget {
       final payload =
           GenerateOtpPayload(email: email, purpose: "Password Reset");
       HelperFunctions.showLoader(context);
-      final GenericResponse? response = await apiService.sendRequest(
-          httpFunction: AuthAPIProvider.generateOtp,
-          payload: payload.toJson(),
-          context: context);
+      final GenericResponse? response =
+          await apiService.sendRequest<ApiResponse>(
+              httpFunction: AuthAPIProvider.generateOtp,
+              payload: payload.toJson(),
+              context: context);
 
       if (context.mounted) {
         HelperFunctions.closeLoader(context);

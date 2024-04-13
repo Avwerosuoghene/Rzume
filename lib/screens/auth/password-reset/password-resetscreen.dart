@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rzume/model/response_payload.dart';
 import 'package:rzume/model/user_data.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/widgets-arguments.dart';
@@ -32,10 +33,11 @@ class PasswordResetScreen extends StatelessWidget {
     Future<bool> validateEmail(String email) async {
       final payload = ValidateEmailPayload(email: email);
       HelperFunctions.showLoader(context);
-      final Map<String, dynamic>? response = await apiService.sendRequest(
-          httpFunction: AuthAPIProvider.validateEmail,
-          payload: payload.toJson(),
-          context: context);
+      final Map<String, dynamic>? response =
+          await apiService.sendRequest<ApiResponse>(
+              httpFunction: AuthAPIProvider.validateEmail,
+              payload: payload.toJson(),
+              context: context);
 
       if (context.mounted) {
         HelperFunctions.closeLoader(context);

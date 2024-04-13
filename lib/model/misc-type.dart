@@ -75,13 +75,13 @@ class IEducation {
       {this.id,
       required this.institutionName,
       required this.courseOfStudy,
-      this.grade,
+      // this.grade,
       required this.yearOfGraduation});
 
   final String? id;
   final String institutionName;
   final String courseOfStudy;
-  final String? grade;
+  // final String? grade;
   final DateTime yearOfGraduation;
 }
 
@@ -115,6 +115,16 @@ class IApplication {
   final DateTime applicationDate;
   final List<String> documents;
   final String status;
+}
+
+class IUniversity {
+  IUniversity({
+    required this.name,
+    required this.country,
+  });
+
+  final String name;
+  final String country;
 }
 
 class IUser {
