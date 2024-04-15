@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/user_data.dart';
+import 'package:rzume/storage/global_values.dart';
 import 'package:rzume/ui/cus_dropdown_button.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/ui/cus_outline_button.dart';
@@ -11,6 +12,7 @@ import 'package:rzume/ui/custom_display_card.dart';
 import 'package:rzume/ui/custom_form_field.dart';
 import 'package:rzume/widgets/helper_functions.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:rzume/widgets/helper_functions_async.dart';
 import 'package:rzume/widgets/misc_notifier.dart';
 
 class OnboardingThirdStage extends StatefulWidget {
@@ -33,7 +35,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
   final List<ICustomFormField> educationForm = [
     formData.studycourse,
   ];
-  late List<String> availableUniversities = [];
+  List<String>? availableUniversities = [];
 
   final List<IEducation> selectedEducationList = [];
   late SingleValueDropDownController _cnt;
@@ -46,6 +48,46 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
       GlobalKey<CusDropDownButtonState>();
   final GlobalKey<CustomDatePickerState> _customDatePicker =
       GlobalKey<CustomDatePickerState>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // This ensures the build is complete before trying to update a state
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      setUniversitiesList();
+    });
+    // setUniversitiesList();
+  }
+
+  setUniversitiesList() async {
+    if (GlobalValues.universities != null) {
+      setState(() {
+        availableUniversities = GlobalValues.universities;
+      });
+      return;
+    }
+
+    HelperFunctions.showLoader(context);
+    bool isSuccess = await HelperAsyncFunctions.getUniversities();
+    if (context.mounted) {
+      HelperFunctions.closeLoader(context);
+    }
+    if (!isSuccess) {
+      context.read<MiscNotifer>().triggerFailure("An error occured");
+      return;
+    }
+
+    setState(() {
+      availableUniversities = GlobalValues.universities;
+    });
+  }
+
+  @override
+  void dispose() {
+    _cnt.dispose();
+    super.dispose();
+  }
 
   void onUniversitySelected(String selectedValue) async {
     setState(() {
@@ -169,23 +211,8 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
   @override
   void initState() {
     _cnt = SingleValueDropDownController();
-    availableUniversities = [
-      'A_Item1',
-      'A_Item2',
-      'A_Item3',
-      'A_Item4',
-      'B_Item1',
-      'B_Item2',
-      'B_Item3',
-      'B_Item4',
-    ];
-    super.initState();
-  }
 
-  @override
-  void dispose() {
-    _cnt.dispose();
-    super.dispose();
+    super.initState();
   }
 
   @override
@@ -209,7 +236,9 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
                 CusDropDownButton(
                     onSelectChangeFunction: onUniversitySelected,
                     selectionHint: "Select University",
-                    selectionItems: availableUniversities,
+                    selectionItems: availableUniversities != null
+                        ? availableUniversities as List<String>
+                        : null,
                     searchHint: "Search for University",
                     key: _customDropDownState),
                 (submitFormClicked && selectedUniversity == null)

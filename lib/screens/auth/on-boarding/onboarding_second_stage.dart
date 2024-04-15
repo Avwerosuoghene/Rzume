@@ -113,7 +113,7 @@ class OnboardingSecondStage extends StatelessWidget {
                   ));
           HelperFunctions.showLoader(currentContext);
 
-          final GenericResponse? onboardingResponse =
+       
 
               // ApiResponse defines the return type of the httpFunction
               await apiService.sendRequest<ApiResponse>(

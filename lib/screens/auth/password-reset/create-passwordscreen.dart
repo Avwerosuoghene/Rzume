@@ -186,7 +186,6 @@ class CreatePasswordScreen extends StatelessWidget {
     }
 
     confimPassword(value) {
-      // print(_newPassword);
       if (value == null || value.isEmpty) {
         return 'Please enter your password';
       }

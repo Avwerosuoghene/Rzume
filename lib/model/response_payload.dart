@@ -74,28 +74,18 @@ class SignupResponse {
   }
 }
 
-// class GetUniversityResponse {
-//   GetUniversityResponse({required this.isCreated});
+class GetUniversityResponse {
+  GetUniversityResponse({required this.country, required this.name});
 
-//   final List<String> webPages;
-//   factory GetUniversityResponse.fromJson(Map<String, dynamic> parsedJson) {
-//     return SignupResponse(
-//       isCreated: parsedJson['isCreated'] as bool,
-//     );
-//   }
-// }
-
-// "web_pages": [
-//             "http://www.aaua.edu.ng/"
-//         ],
-//         "alpha_two_code": "NG",
-//         "state-province": null,
-//         "domains": [
-//             "aaua.edu.ng"
-//         ],
-//         "name": "Adekunle Ajasin University",
-//         "country": "Nigeria"
-
+  final String country;
+  final String name;
+  factory GetUniversityResponse.fromJson(Map<String, dynamic> parsedJson) {
+    return GetUniversityResponse(
+      country: parsedJson['country'] as String,
+      name: parsedJson['name'] as String,
+    );
+  }
+}
 class OtpPasswordResetResponse {
   OtpPasswordResetResponse({required this.isSuccess, required this.message});
 
@@ -118,12 +108,14 @@ class GenericResponse {
   }
 }
 
-// class ExternalGenericResponse {
-//   ExternalGenericResponse({required this.content});
 
-//   final bool isSuccess;
+// This takes a json array and converts to an iterable
+class JsonArrayReesponse{
+  JsonArrayReesponse({required this.data});
 
-//   factory GenericResponse.fromJson(Map<String, dynamic> parsedJson) {
-//     return GenericResponse(isSuccess: parsedJson['isSuccess'] as bool);
-//   }
-// }
+  final List<dynamic> data;
+
+  factory JsonArrayReesponse.fromJson(List<dynamic> json) {
+    return JsonArrayReesponse(data: json.map((item) => item as dynamic).toList());
+  }
+}

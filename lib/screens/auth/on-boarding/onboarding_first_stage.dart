@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logger/logger.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/request_payload.dart';
 import 'package:rzume/model/response_payload.dart';
@@ -16,6 +17,10 @@ class OnboardingFirstStage extends StatelessWidget {
   final String? Function(String? value) validator =
       HelperFunctions.stringValidator;
   final void Function(int stepNumber) proceedFunction;
+
+  final logger = Logger(
+      printer:
+          PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
 
   final List<ICustomFormField> userNameForm = [
     formData.firstname,
@@ -85,7 +90,7 @@ class OnboardingFirstStage extends StatelessWidget {
           HelperFunctions.closeLoader(context);
         }
       } catch (error) {
-        print(error);
+        logger.e(error);
       }
 
       proceedFunction(1);

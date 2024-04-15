@@ -26,7 +26,7 @@ class ProfileManagementAPIProvider {
         return generateOtpResponse;
       });
     } catch (error) {
-      print(error);
+      logger.e(error);
       rethrow;
     }
   }
@@ -43,7 +43,7 @@ class ProfileManagementAPIProvider {
         return dynamicResponse;
       });
     } catch (error) {
-      print(error);
+      logger.e(error);
       rethrow;
     }
   }

@@ -67,9 +67,6 @@ class _CustomFormState extends State<CustomForm> {
 
     widget.confirmFunction(_enteredEmail, _enteredPassword);
 
-    // if (widget.formType == FormType.signin) {
-    //   print('signin');
-    // }
   }
 
   List<Widget> buildFormFields() {

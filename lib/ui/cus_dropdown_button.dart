@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:rzume/model/enums.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -19,7 +20,7 @@ class CusDropDownButton extends StatefulWidget {
   final void Function(String value) onSelectChangeFunction;
   final Roundness? roundnessDegree;
   final String selectionHint;
-  final List<String> selectionItems;
+  final List<dynamic>? selectionItems;
   final String searchHint;
 
   @override
@@ -30,7 +31,11 @@ class CusDropDownButtonState extends State<CusDropDownButton> {
   late List<String> selectionItems;
   late String searchInputInt;
 
-  String? selectedValue;
+  final logger = Logger(
+      printer:
+          PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
+
+  dynamic? selectedValue;
   final TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -60,7 +65,7 @@ class CusDropDownButtonState extends State<CusDropDownButton> {
         borderRadius: BorderRadius.circular(roundness),
       ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton2<String>(
+        child: DropdownButton2<dynamic>(
           isExpanded: true,
 
           hint: Text(
@@ -68,7 +73,7 @@ class CusDropDownButtonState extends State<CusDropDownButton> {
             style: Theme.of(context).inputDecorationTheme.hintStyle,
           ),
           items: widget.selectionItems
-              .map((item) => DropdownMenuItem(
+              ?.map((item) => DropdownMenuItem(
                     value: item,
                     child: Text(
                       item,
@@ -77,9 +82,10 @@ class CusDropDownButtonState extends State<CusDropDownButton> {
                   ))
               .toList(),
           value: selectedValue,
-          onChanged: (value) {
+          onChanged: (dynamic value) {
             setState(() {
               if (value != null) {
+                print("this is: ${value}");
                 selectedValue = value;
                 widget.onSelectChangeFunction(value);
               }

@@ -66,7 +66,6 @@ class _BellIcon extends State<BellIcon> with TickerProviderStateMixin {
     _timer = Timer.periodic(
       countdownDuration,
       (Timer timer) {
-        print(counter);
         if (counter == 0) {
           timer.cancel();
         } else {

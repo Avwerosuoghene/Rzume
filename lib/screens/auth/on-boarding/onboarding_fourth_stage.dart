@@ -56,7 +56,7 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
   final GlobalKey<CustomDatePickerState> _endDatePicker =
       GlobalKey<CustomDatePickerState>();
 
-  void onIndustrySelected(String selectedValue) async {
+  void onIndustrySelected(dynamic selectedValue) async {
     setState(() {
       selectedIndustry = selectedValue;
     });
