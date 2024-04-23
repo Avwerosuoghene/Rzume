@@ -76,13 +76,13 @@ class IEducation {
       required this.institutionName,
       required this.courseOfStudy,
       // this.grade,
-      required this.yearOfGraduation});
+      required this.graduationDate});
 
   final String? id;
   final String institutionName;
   final String courseOfStudy;
   // final String? grade;
-  final DateTime yearOfGraduation;
+  final DateTime graduationDate;
 }
 
 class IExperience {

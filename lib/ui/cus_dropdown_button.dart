@@ -85,7 +85,6 @@ class CusDropDownButtonState extends State<CusDropDownButton> {
           onChanged: (dynamic value) {
             setState(() {
               if (value != null) {
-                print("this is: ${value}");
                 selectedValue = value;
                 widget.onSelectChangeFunction(value);
               }

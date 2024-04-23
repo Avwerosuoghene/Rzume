@@ -34,7 +34,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   getUniversities() {
-
     if (GlobalValues.universities != null) {
       return;
     }
@@ -59,8 +58,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final pageContent =
-        // OnboardingFirstStage(proceedFunction: proceedToNextStep);
-        OnboardingThirdStage(proceedFunction: proceedToNextStep);
+        OnboardingFirstStage(proceedFunction: proceedToNextStep);
+    // OnboardingThirdStage(proceedFunction: proceedToNextStep);
     return AuthPageLayout(
       pageContent: pageContent,
       showBacknav: true,

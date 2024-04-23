@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:rzume/model/misc-type.dart';
+import 'package:rzume/model/request_payload.dart';
 import 'package:rzume/model/user_data.dart';
 import 'package:rzume/storage/global_values.dart';
 import 'package:rzume/ui/cus_dropdown_button.dart';
@@ -48,6 +50,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
       GlobalKey<CusDropDownButtonState>();
   final GlobalKey<CustomDatePickerState> _customDatePicker =
       GlobalKey<CustomDatePickerState>();
+  bool proceedToNext = false;
 
   @override
   void didChangeDependencies() {
@@ -89,6 +92,32 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
     super.dispose();
   }
 
+  List<Widget> buildFormFields() {
+    return educationForm.map((formItem) {
+      bool isLast =
+          formItem.formHint == educationForm[educationForm.length - 1].formHint;
+
+      return Column(
+        children: [
+          CustomFormField(
+            formHint: formItem.formHint,
+            formLabel: formItem.formLabel,
+            formPrefixIcon: formItem.formPrefixIcon,
+            inputValue: formItem.enteredInputSet,
+            showSuffixIcon: formItem.showSuffixIcon,
+            validatorFunction: validator,
+            keyboardType: formItem.keyboardType,
+            onChangeEvent: (value) {},
+          ),
+          if (!isLast)
+            const SizedBox(
+              height: 20,
+            )
+        ],
+      );
+    }).toList();
+  }
+
   void onUniversitySelected(String selectedValue) async {
     setState(() {
       selectedUniversity = selectedValue;
@@ -116,22 +145,28 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
     submitFormClicked = false;
   }
 
-  void submitForm(String action) async {
-    final isValid = _form.currentState!.validate();
-
-    if (action == "Proceed") {
-      handleProceedCall();
-    }
-    if (action == "Add") {
-      handleAddCall(isValid);
-    }
+  OnboardUserPayload<OnboardingThirdStagePayload> generateThirdStagePayload() {
+    return OnboardUserPayload(
+        stage: 2,
+        onboardUserInfo:
+            OnboardingThirdStagePayload(education: selectedEducationList),
+        mail: 'kesuion1@gmail.com');
   }
 
-  handleAddCall(bool isValid) {
+  Future initiateThirdStageRequest(BuildContext currentContext) async {
+    OnboardUserPayload<OnboardingThirdStagePayload> onboarUserPayload =
+        generateThirdStagePayload();
+    HelperFunctions.showLoader(currentContext);
+  }
+
+  isContinuation(bool isSubmissionInvalid) {
     setState(() {
       submitFormClicked = true;
     });
-    if (!isValid || selectedUniversity == null || selectedDate == null) {
+    if (isSubmissionInvalid) {
+      context
+          .read<MiscNotifer>()
+          .triggerFailure("Please add a valid education");
       return;
     }
 
@@ -140,23 +175,11 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
     selectedEducationList.add(IEducation(
         institutionName: selectedUniversity!,
         courseOfStudy: educationForm[0].enteredValue,
-        yearOfGraduation: selectedDate!));
-
-    resetFormValues();
-  }
-
-  handleProceedCall() {
-    if (selectedEducationList.isEmpty) {
-      context
-          .read<MiscNotifer>()
-          .triggerFailure("Please add a valid education");
-      return;
-    }
-    resetFormValues();
-    widget.proceedFunction(1);
+        graduationDate: selectedDate!));
   }
 
   Widget generateCardInfo(IEducation educationInfo) {
+    String formattedDate = DateFormat.yM().format(educationInfo.graduationDate);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -164,6 +187,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
         Text(
           textAlign: TextAlign.start,
           educationInfo.institutionName,
+          overflow: TextOverflow.ellipsis,
           style: Theme.of(context)
               .textTheme
               .bodyMedium!
@@ -171,13 +195,14 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
         ),
         Text(
           educationInfo.courseOfStudy,
+          overflow: TextOverflow.ellipsis,
           style: Theme.of(context)
               .textTheme
               .bodySmall!
               .copyWith(color: const Color.fromRGBO(0, 0, 0, 0.5)),
         ),
         Text(
-          educationInfo.yearOfGraduation.toIso8601String(),
+          formattedDate,
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -192,19 +217,21 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
       final index = entry.key;
       final educationItem = entry.value;
       final cardContent = generateCardInfo(educationItem);
-      return Column(
-        children: [
-          CustomDisplayCard(
-            cardContent: cardContent,
-            itemIndex: index,
-            deleteFunction: deletItem,
-            itemImage: 'assets/icons/education_icon.png',
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
-      );
+      return proceedToNext == false
+          ? Column(
+              children: [
+                CustomDisplayCard(
+                  cardContent: cardContent,
+                  itemIndex: index,
+                  deleteFunction: deletItem,
+                  itemImage: 'assets/icons/education_icon.png',
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
+            )
+          : Container();
     }).toList();
   }
 
@@ -217,6 +244,25 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
 
   @override
   Widget build(BuildContext context) {
+    void submitForm(String action) async {
+      final isFormValid = _form.currentState!.validate();
+
+      final bool isSubmissionInvalid =
+          !isFormValid || selectedUniversity == null || selectedDate == null;
+
+      if (action == "Proceed") {
+        isContinuation(isSubmissionInvalid);
+        proceedToNext = true;
+        await initiateThirdStageRequest(context);
+        widget.proceedFunction(1);
+        resetFormValues();
+      }
+      if (action == "Add") {
+        isContinuation(isSubmissionInvalid);
+        resetFormValues();
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -259,16 +305,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
                 const SizedBox(
                   height: 20,
                 ),
-                CustomFormField(
-                  formHint: formData.studycourse.formHint,
-                  formLabel: formData.studycourse.formLabel,
-                  formPrefixIcon: formData.studycourse.formPrefixIcon,
-                  inputValue: formData.studycourse.enteredInputSet,
-                  showSuffixIcon: formData.studycourse.showSuffixIcon,
-                  validatorFunction: validator,
-                  keyboardType: formData.studycourse.keyboardType,
-                  onChangeEvent: (value) {},
-                ),
+                ...buildFormFields(),
                 const SizedBox(
                   height: 20,
                 ),
@@ -308,7 +345,9 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
         CusOutlineButton(
           color: const Color.fromRGBO(16, 96, 166, 1.0),
           // icon: 'assets/icons/linkedin_logo.png',
-          buttonText: selectedEducationList.isEmpty ? 'Add' : 'Add another',
+          buttonText: selectedEducationList.isNotEmpty && proceedToNext != true
+              ? 'Add another'
+              : 'Add',
           onPressedFunction: () {
             submitForm("Add");
           },

@@ -53,7 +53,7 @@ class CustomDisplayCard extends StatelessWidget {
             const SizedBox(
               width: 14,
             ),
-            cardContent,
+            Expanded(child: cardContent),
             const Spacer(),
             Container(
               width: 34,

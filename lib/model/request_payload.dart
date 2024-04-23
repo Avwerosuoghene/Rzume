@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:rzume/model/enums.dart';
+import 'package:rzume/model/misc-type.dart';
 
 class LoginRequestPayload {
   LoginRequestPayload({required this.username, required this.password});
@@ -107,6 +108,7 @@ class OnboardingFirstStagePayload implements ConvertibleToMap {
   final String firstName;
   final String lastName;
 
+  @override
   Map<String, dynamic> toMap() {
     return {'FirstName': firstName, 'LastName': lastName};
   }
@@ -132,6 +134,23 @@ class OnboardingSecondStagePayload implements ConvertibleToMap {
   @override
   Map<String, dynamic> toMap() {
     return {'FileBytes': fileBytes, 'FileName': fileName, 'FileCat': fileCat};
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
+  }
+}
+
+class OnboardingThirdStagePayload implements ConvertibleToMap {
+  OnboardingThirdStagePayload(
+      {required this.education});
+
+  // final PlatformFile file;
+  final List<IEducation> education;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {'Education': education};
   }
 
   String toJson() {

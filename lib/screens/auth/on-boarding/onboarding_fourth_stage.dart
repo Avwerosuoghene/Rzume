@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:rzume/model/mids_data.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/user_data.dart';
 import 'package:rzume/ui/cus_dropdown_button.dart';
@@ -35,7 +36,7 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
     formData.company,
     formData.designation
   ];
-  late List<String> selectionItems = [];
+  late List<String> selectionItems;
 
   final List<IExperience> careeerList = [];
 
@@ -55,6 +56,7 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
       GlobalKey<CustomDatePickerState>();
   final GlobalKey<CustomDatePickerState> _endDatePicker =
       GlobalKey<CustomDatePickerState>();
+  bool proceedToNext = false;
 
   void onIndustrySelected(dynamic selectedValue) async {
     setState(() {
@@ -92,24 +94,32 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
   }
 
   void submitForm(String action) async {
-    final isValid = _form.currentState!.validate();
+    final isFormValid = _form.currentState!.validate();
+
+    final bool isSubmissionInvalid = !isFormValid ||
+        selectedStartDate == null ||
+        selectedEndDate == null ||
+        selectedIndustry == null;
 
     if (action == "Proceed") {
-      handleProceedCall();
+      isContinuation(isSubmissionInvalid);
+      proceedToNext = true;
+      widget.proceedFunction(1);
     }
     if (action == "Add") {
-      handleAddCall(isValid);
+      isContinuation(isSubmissionInvalid);
     }
   }
 
-  handleAddCall(bool isValid) {
+  isContinuation(bool isSubmissionInvalid) {
     setState(() {
       submitFormClicked = true;
     });
-    if (!isValid ||
-        selectedStartDate == null ||
-        selectedEndDate == null ||
-        selectedIndustry == null) {
+
+    if (isSubmissionInvalid) {
+      context
+          .read<MiscNotifer>()
+          .triggerFailure("Please add a valid experience");
       return;
     }
 
@@ -125,8 +135,8 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
     resetFormValues();
   }
 
-  handleProceedCall() {
-    if (careeerList.isEmpty) {
+  handleProceedCall(bool isSubmissionInvalid, bool proceed) {
+    if (isSubmissionInvalid) {
       context
           .read<MiscNotifer>()
           .triggerFailure("Please add a valid experience");
@@ -146,6 +156,7 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
         Text(
           textAlign: TextAlign.start,
           experienceItem.company,
+          overflow: TextOverflow.ellipsis,
           style: Theme.of(context)
               .textTheme
               .bodyMedium!
@@ -174,19 +185,21 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
       final index = entry.key;
       final experienceItem = entry.value;
       final cardContent = generateCardInfo(experienceItem);
-      return Column(
-        children: [
-          CustomDisplayCard(
-            cardContent: cardContent,
-            itemIndex: index,
-            deleteFunction: deletItem,
-            itemImage: 'assets/icons/career_icon.png',
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
-      );
+      return proceedToNext == false
+          ? Column(
+              children: [
+                CustomDisplayCard(
+                  cardContent: cardContent,
+                  itemIndex: index,
+                  deleteFunction: deletItem,
+                  itemImage: 'assets/icons/career_icon.png',
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
+            )
+          : Container();
     }).toList();
   }
 
@@ -219,16 +232,7 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
   @override
   void initState() {
     _cnt = SingleValueDropDownController();
-    selectionItems = [
-      'A_Item1',
-      'A_Item2',
-      'A_Item3',
-      'A_Item4',
-      'B_Item1',
-      'B_Item2',
-      'B_Item3',
-      'B_Item4',
-    ];
+    selectionItems = MiscData.getIndustryList();
     super.initState();
   }
 
@@ -342,7 +346,9 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
         CusOutlineButton(
           color: const Color.fromRGBO(16, 96, 166, 1.0),
           // icon: 'assets/icons/linkedin_logo.png',
-          buttonText: careeerList.isEmpty ? 'Add' : 'Add another',
+          buttonText: careeerList.isNotEmpty && proceedToNext != true
+              ? 'Add another'
+              : 'Add',
           onPressedFunction: () {
             submitForm("Add");
           },

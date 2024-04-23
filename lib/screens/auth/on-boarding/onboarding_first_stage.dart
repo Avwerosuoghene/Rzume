@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/request_payload.dart';
@@ -30,7 +29,7 @@ class OnboardingFirstStage extends StatelessWidget {
   final APIService apiService = APIService();
 
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
-
+  @override
   List<Widget> buildFormFields() {
     return userNameForm.map((formItem) {
       bool isLast = formItem.formHint == userNameForm.last.formHint;
@@ -58,6 +57,15 @@ class OnboardingFirstStage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    OnboardUserPayload<OnboardingFirstStagePayload>
+        generateFirstStagePayload() {
+      return OnboardUserPayload<OnboardingFirstStagePayload>(
+          mail: 'kesuion1@gmail.com',
+          stage: 0,
+          onboardUserInfo:
+              OnboardingFirstStagePayload(firstName: "Test", lastName: "Test"));
+    }
+
     void submitForm() async {
       final isValid = _form.currentState!.validate();
 
@@ -73,11 +81,7 @@ class OnboardingFirstStage extends StatelessWidget {
           return;
         }
         OnboardUserPayload<OnboardingFirstStagePayload> onboarUserPayload =
-            OnboardUserPayload<OnboardingFirstStagePayload>(
-                mail: 'kesuion1@gmail.com',
-                stage: 0,
-                onboardUserInfo: OnboardingFirstStagePayload(
-                    firstName: "Test", lastName: "Test"));
+            generateFirstStagePayload();
         HelperFunctions.showLoader(currentContext);
 
         final GenericResponse? onboardingResponse =
