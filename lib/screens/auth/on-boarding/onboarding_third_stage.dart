@@ -4,7 +4,10 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/request_payload.dart';
+import 'package:rzume/model/response_payload.dart';
 import 'package:rzume/model/user_data.dart';
+import 'package:rzume/services/api_service.dart';
+import 'package:rzume/services/profile_mngmnt_api_provider.dart';
 import 'package:rzume/storage/global_values.dart';
 import 'package:rzume/ui/cus_dropdown_button.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
@@ -51,6 +54,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
   final GlobalKey<CustomDatePickerState> _customDatePicker =
       GlobalKey<CustomDatePickerState>();
   bool proceedToNext = false;
+  final APIService apiService = APIService();
 
   @override
   void didChangeDependencies() {
@@ -154,20 +158,41 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
   }
 
   Future initiateThirdStageRequest(BuildContext currentContext) async {
+    if (!context.mounted) {
+      return;
+    }
     OnboardUserPayload<OnboardingThirdStagePayload> onboarUserPayload =
         generateThirdStagePayload();
-    HelperFunctions.showLoader(currentContext);
+    try {
+      HelperFunctions.showLoader(currentContext);
+      GenericResponse? requestResponse =
+          await apiService.sendRequest<GenericResponse>(
+              httpFunction: ProfileManagementAPIProvider.onboardUser,
+              payload: onboarUserPayload.toJson(),
+              context: currentContext);
+      if (requestResponse?.isSuccess == true) {
+        proceedToNext = true;
+      }
+      if (context.mounted) {
+        HelperFunctions.closeLoader(context);
+      }
+    } catch (error) {
+      logger.e(error);
+    }
   }
 
-  isContinuation(bool isSubmissionInvalid) {
+  bool isContinuation(bool isSubmissionInvalid) {
     setState(() {
       submitFormClicked = true;
     });
-    if (isSubmissionInvalid) {
+    if (isSubmissionInvalid && selectedEducationList.isEmpty) {
       context
           .read<MiscNotifer>()
           .triggerFailure("Please add a valid education");
-      return;
+      return false;
+    }
+    if (isSubmissionInvalid) {
+      return true;
     }
 
     _form.currentState!.save();
@@ -176,6 +201,8 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
         institutionName: selectedUniversity!,
         courseOfStudy: educationForm[0].enteredValue,
         graduationDate: selectedDate!));
+
+    return true;
   }
 
   Widget generateCardInfo(IEducation educationInfo) {
@@ -251,14 +278,24 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
           !isFormValid || selectedUniversity == null || selectedDate == null;
 
       if (action == "Proceed") {
-        isContinuation(isSubmissionInvalid);
+        final bool validFormData = isContinuation(isSubmissionInvalid);
+        if (!validFormData) {
+          return;
+        }
         proceedToNext = true;
         await initiateThirdStageRequest(context);
+
         widget.proceedFunction(1);
         resetFormValues();
+        selectedEducationList.clear();
       }
       if (action == "Add") {
-        isContinuation(isSubmissionInvalid);
+        proceedToNext = false;
+
+        final bool validFormData = isContinuation(isSubmissionInvalid);
+        if (!validFormData) {
+          return;
+        }
         resetFormValues();
       }
     }

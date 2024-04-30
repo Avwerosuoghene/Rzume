@@ -11,7 +11,7 @@ class ProfileManagementAPIProvider {
       printer:
           PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
 
-  static Future<ApiResponse<GenericResponse>> secondStageUserOnboard(
+  static Future<ApiResponse<GenericResponse>> onboardUser(
       String? payload) async {
     final Uri url = Uri.parse('${APIRoutes.profileServiceUrl}/user-onboarding');
     try {
@@ -19,11 +19,12 @@ class ProfileManagementAPIProvider {
         'Content-Type': 'application/json',
       }).then((http.Response response) {
         final Map<String, dynamic> mappedResponse = json.decode(response.body);
-        final ApiResponse<GenericResponse> generateOtpResponse =
+        print(mappedResponse);
+        final ApiResponse<GenericResponse> onboardUserResponse =
             ApiResponse.fromJson(mappedResponse, GenericResponse.fromJson);
 
-        logger.i('otp request succesful: ${generateOtpResponse.isSuccess}');
-        return generateOtpResponse;
+        logger.i('onboard request: ${onboardUserResponse.isSuccess}');
+        return onboardUserResponse;
       });
     } catch (error) {
       logger.e(error);

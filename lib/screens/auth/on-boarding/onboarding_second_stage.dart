@@ -92,7 +92,6 @@ class OnboardingSecondStage extends StatelessWidget {
         if (result != null) {
           _pickedFile = result.files.first;
           _fileName = _pickedFile.name;
-          logger.i(_fileName);
           if (_pickedFile.extension!.toLowerCase() != 'pdf') {
             return;
           }
@@ -113,21 +112,16 @@ class OnboardingSecondStage extends StatelessWidget {
                   ));
           HelperFunctions.showLoader(currentContext);
 
-       
-
-              // ApiResponse defines the return type of the httpFunction
-              await apiService.sendRequest<ApiResponse>(
-                  httpFunction:
-                      ProfileManagementAPIProvider.secondStageUserOnboard,
-                  payload: onboarUserPayload.toJson(),
-                  context: currentContext);
+          // ApiResponse defines the return type of the httpFunction
+          await apiService.sendRequest<GenericResponse>(
+              httpFunction: ProfileManagementAPIProvider.onboardUser,
+              payload: onboarUserPayload.toJson(),
+              context: currentContext);
           if (context.mounted) {
             HelperFunctions.closeLoader(context);
           }
 
           fileToDisplay = File(_pickedFile.path.toString());
-
-          logger.i('FileName $_pickedFile');
         }
       } catch (error) {
         logger.e(error);

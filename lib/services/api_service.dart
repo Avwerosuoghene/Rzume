@@ -14,7 +14,7 @@ class APIService {
           PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
 
   Future<dynamic> sendRequest<T>(
-      {required Future<T> Function(String? arg) httpFunction,
+      {required Future Function(String? arg) httpFunction,
       String? payload,
       required BuildContext? context,
       bool externalService = false}) async {

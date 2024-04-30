@@ -86,6 +86,7 @@ class GetUniversityResponse {
     );
   }
 }
+
 class OtpPasswordResetResponse {
   OtpPasswordResetResponse({required this.isSuccess, required this.message});
 
@@ -108,14 +109,14 @@ class GenericResponse {
   }
 }
 
-
 // This takes a json array and converts to an iterable
-class JsonArrayReesponse{
+class JsonArrayReesponse {
   JsonArrayReesponse({required this.data});
 
   final List<dynamic> data;
 
   factory JsonArrayReesponse.fromJson(List<dynamic> json) {
-    return JsonArrayReesponse(data: json.map((item) => item as dynamic).toList());
+    return JsonArrayReesponse(
+        data: json.map((item) => item as dynamic).toList());
   }
 }

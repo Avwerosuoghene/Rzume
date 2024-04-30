@@ -77,19 +77,15 @@ class OnboardingFirstStage extends StatelessWidget {
       final BuildContext currentContext = context;
 
       try {
-        if (!context.mounted) {
-          return;
-        }
         OnboardUserPayload<OnboardingFirstStagePayload> onboarUserPayload =
             generateFirstStagePayload();
         HelperFunctions.showLoader(currentContext);
 
-        final GenericResponse? onboardingResponse =
-            await apiService.sendRequest<ApiResponse>(
-                httpFunction:
-                    ProfileManagementAPIProvider.secondStageUserOnboard,
-                payload: onboarUserPayload.toJson(),
-                context: currentContext);
+        // final GenericResponse? onboardingResponse =
+        await apiService.sendRequest<GenericResponse>(
+            httpFunction: ProfileManagementAPIProvider.onboardUser,
+            payload: onboarUserPayload.toJson(),
+            context: currentContext);
         if (context.mounted) {
           HelperFunctions.closeLoader(context);
         }

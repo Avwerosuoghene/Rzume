@@ -132,7 +132,6 @@ class _SigninScreenState extends State<SigninScreen> {
     if (response.token != "") {
       if (context.mounted) {
         GlobalValues.setLoginStatus(true, response.token);
-        logger.i(response.token);
 
         logger.i('token saved succesfully');
         Navigator.pushNamed(context, '/home');

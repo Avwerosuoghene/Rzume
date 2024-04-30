@@ -142,15 +142,50 @@ class OnboardingSecondStagePayload implements ConvertibleToMap {
 }
 
 class OnboardingThirdStagePayload implements ConvertibleToMap {
-  OnboardingThirdStagePayload(
-      {required this.education});
+  OnboardingThirdStagePayload({required this.education});
 
   // final PlatformFile file;
   final List<IEducation> education;
 
   @override
   Map<String, dynamic> toMap() {
-    return {'Education': education};
+    return {
+      'EducationList': education
+          .map((e) => {
+                'EducationID': e.id,
+                'InstitutionName': e.institutionName,
+                'CourseOfStudy': e.courseOfStudy,
+                'GraduationDate': e.graduationDate
+                    .toIso8601String(), // Convert DateTime to ISO 8601 string
+              })
+          .toList()
+    };
+  }
+
+  String toJson() {
+    return jsonEncode(toMap());
+  }
+}
+
+class OnboardingFourthStagePayload implements ConvertibleToMap {
+  OnboardingFourthStagePayload({required this.experience});
+
+  final List<IExperience> experience;
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'ExperienceList': experience
+          .map((e) => {
+                'Industry': e.industry,
+                'Company': e.company,
+                'Designation': e.designation,
+                'StartDate': e.startDate.toIso8601String(),
+                'EndDate': e.endDate
+                    .toIso8601String(), // Convert DateTime to ISO 8601 string
+              })
+          .toList()
+    };
   }
 
   String toJson() {

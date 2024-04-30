@@ -4,7 +4,11 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:rzume/model/mids_data.dart';
 import 'package:rzume/model/misc-type.dart';
+import 'package:rzume/model/request_payload.dart';
+import 'package:rzume/model/response_payload.dart';
 import 'package:rzume/model/user_data.dart';
+import 'package:rzume/services/api_service.dart';
+import 'package:rzume/services/profile_mngmnt_api_provider.dart';
 import 'package:rzume/ui/cus_dropdown_button.dart';
 import 'package:rzume/ui/cus_filled_button.dart';
 import 'package:rzume/ui/cus_outline_button.dart';
@@ -57,6 +61,7 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
   final GlobalKey<CustomDatePickerState> _endDatePicker =
       GlobalKey<CustomDatePickerState>();
   bool proceedToNext = false;
+  final APIService apiService = APIService();
 
   void onIndustrySelected(dynamic selectedValue) async {
     setState(() {
@@ -93,6 +98,38 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
     submitFormClicked = false;
   }
 
+  OnboardUserPayload<OnboardingFourthStagePayload>
+      generateFourthStagePayload() {
+    return OnboardUserPayload(
+        stage: 3,
+        onboardUserInfo: OnboardingFourthStagePayload(experience: careeerList),
+        mail: 'kesuion1@gmail.com');
+  }
+
+  Future initiateFourthStageRequest(BuildContext currentContext) async {
+    OnboardUserPayload<OnboardingFourthStagePayload> onboarUserPayload =
+        generateFourthStagePayload();
+
+    try {
+      HelperFunctions.showLoader(currentContext);
+
+      // final GenericResponse? onboardingResponse =
+      GenericResponse? requestResponse =
+          await apiService.sendRequest<GenericResponse>(
+              httpFunction: ProfileManagementAPIProvider.onboardUser,
+              payload: onboarUserPayload.toJson(),
+              context: currentContext);
+      if (requestResponse?.isSuccess == true) {
+        careeerList.clear();
+      }
+      if (context.mounted) {
+        HelperFunctions.closeLoader(context);
+      }
+    } catch (error) {
+      logger.e(error);
+    }
+  }
+
   void submitForm(String action) async {
     final isFormValid = _form.currentState!.validate();
 
@@ -102,25 +139,41 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
         selectedIndustry == null;
 
     if (action == "Proceed") {
-      isContinuation(isSubmissionInvalid);
+      final bool validFormData = isContinuation(isSubmissionInvalid);
+      if (!validFormData) {
+        return;
+      }
       proceedToNext = true;
+      await initiateFourthStageRequest(context);
       widget.proceedFunction(1);
+
+      careeerList.clear();
+      resetFormValues();
     }
     if (action == "Add") {
-      isContinuation(isSubmissionInvalid);
+      proceedToNext = false;
+      final bool validFormData = isContinuation(isSubmissionInvalid);
+      if (!validFormData) {
+        return;
+      }
+      resetFormValues();
     }
   }
 
-  isContinuation(bool isSubmissionInvalid) {
+  bool isContinuation(bool isSubmissionInvalid) {
     setState(() {
       submitFormClicked = true;
     });
 
-    if (isSubmissionInvalid) {
+    if (isSubmissionInvalid && careeerList.isEmpty) {
       context
           .read<MiscNotifer>()
           .triggerFailure("Please add a valid experience");
-      return;
+      return false;
+    }
+
+    if (isSubmissionInvalid) {
+      return true;
     }
 
     _form.currentState!.save();
@@ -132,7 +185,8 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
         endDate: selectedEndDate!,
         industry: selectedIndustry!));
 
-    resetFormValues();
+    // ();
+    return true;
   }
 
   handleProceedCall(bool isSubmissionInvalid, bool proceed) {

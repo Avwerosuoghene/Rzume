@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:rzume/model/misc-type.dart';
-import 'package:rzume/model/response_payload.dart';
 import 'package:rzume/screens/auth/on-boarding/onboarding_first_stage.dart';
 import 'package:rzume/screens/auth/on-boarding/onboarding_fourth_stage.dart';
 import 'package:rzume/screens/auth/on-boarding/onboarding_second_stage.dart';
 import 'package:rzume/screens/auth/on-boarding/onboarding_third_stage.dart';
+
 import 'package:rzume/services/api_service.dart';
-import 'package:rzume/services/external_services_api_provider.dart';
 import 'package:rzume/storage/global_values.dart';
 import 'package:rzume/widgets/helper_functions_async.dart';
 
@@ -58,8 +56,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final pageContent =
-        OnboardingFirstStage(proceedFunction: proceedToNextStep);
-    // OnboardingThirdStage(proceedFunction: proceedToNextStep);
+        // OnboardingFourthStage(proceedFunction: proceedToNextStep);
+        OnboardingFourthStage(proceedFunction: proceedToNextStep);
     return AuthPageLayout(
       pageContent: pageContent,
       showBacknav: true,
