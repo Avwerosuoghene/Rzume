@@ -17,7 +17,6 @@ import 'package:rzume/ui/custom_display_card.dart';
 import 'package:rzume/ui/custom_form_field.dart';
 import 'package:rzume/widgets/helper_functions.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:rzume/widgets/helper_functions_async.dart';
 import 'package:rzume/widgets/misc_notifier.dart';
 
 class OnboardingThirdStage extends StatefulWidget {
@@ -40,7 +39,7 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
   final List<ICustomFormField> educationForm = [
     formData.studycourse,
   ];
-  List<String>? availableUniversities = [];
+  // List<String> availableUniversities = [];
 
   final List<IEducation> selectedEducationList = [];
   late SingleValueDropDownController _cnt;
@@ -61,34 +60,16 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
     super.didChangeDependencies();
 
     // This ensures the build is complete before trying to update a state
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      setUniversitiesList();
-    });
+    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //   setUniversitiesList();
+    // });
     // setUniversitiesList();
   }
 
-  setUniversitiesList() async {
-    if (GlobalValues.universities != null) {
-      setState(() {
-        availableUniversities = GlobalValues.universities;
-      });
-      return;
-    }
+  // setUniversitiesList() async {
+  //   availableUniversities = context.watch<GlobalValues>().universities;
 
-    HelperFunctions.showLoader(context);
-    bool isSuccess = await HelperAsyncFunctions.getUniversities();
-    if (context.mounted) {
-      HelperFunctions.closeLoader(context);
-    }
-    if (!isSuccess) {
-      context.read<MiscNotifer>().triggerFailure("An error occured");
-      return;
-    }
-
-    setState(() {
-      availableUniversities = GlobalValues.universities;
-    });
-  }
+  // }
 
   @override
   void dispose() {
@@ -271,6 +252,8 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> universityList =
+        context.watch<GlobalValues>().universities;
     void submitForm(String action) async {
       final isFormValid = _form.currentState!.validate();
 
@@ -319,9 +302,10 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
                 CusDropDownButton(
                     onSelectChangeFunction: onUniversitySelected,
                     selectionHint: "Select University",
-                    selectionItems: availableUniversities != null
-                        ? availableUniversities as List<String>
-                        : null,
+                    // selectionItems: availableUniversities != null
+                    //     ? availableUniversities as List<String>
+                    //     : null,
+                    selectionItems: universityList,
                     searchHint: "Search for University",
                     key: _customDropDownState),
                 (submitFormClicked && selectedUniversity == null)

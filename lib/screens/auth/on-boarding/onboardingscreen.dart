@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:rzume/screens/auth/on-boarding/onboarding_first_stage.dart';
-import 'package:rzume/screens/auth/on-boarding/onboarding_fourth_stage.dart';
-import 'package:rzume/screens/auth/on-boarding/onboarding_second_stage.dart';
+import 'package:provider/provider.dart';
 import 'package:rzume/screens/auth/on-boarding/onboarding_third_stage.dart';
 
 import 'package:rzume/services/api_service.dart';
@@ -20,6 +18,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final APIService apiService = APIService();
+  late GlobalValues globalValues;
 
   static final logger = Logger(
       printer:
@@ -28,14 +27,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-    getUniversities();
-  }
-
-  getUniversities() {
-    if (GlobalValues.universities != null) {
-      return;
-    }
-    HelperAsyncFunctions.getUniversities();
   }
 
   String? emailValidator(String? value) {
@@ -55,9 +46,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    globalValues = Provider.of<GlobalValues>(context);
+
+    if (globalValues.universities.length <= 1) {
+      HelperAsyncFunctions.getUniversities(context);
+    }
+
     final pageContent =
-        // OnboardingFourthStage(proceedFunction: proceedToNextStep);
-        OnboardingFourthStage(proceedFunction: proceedToNextStep);
+        OnboardingThirdStage(proceedFunction: proceedToNextStep);
     return AuthPageLayout(
       pageContent: pageContent,
       showBacknav: true,

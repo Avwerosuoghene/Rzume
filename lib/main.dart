@@ -12,6 +12,7 @@ import 'package:rzume/screens/auth/signup/signupscreen.dart';
 import 'package:rzume/screens/start/splash.dart';
 import 'package:rzume/screens/start/startscreen.dart';
 import 'package:rzume/screens/utility/otp_verificationscreen.dart';
+import 'package:rzume/storage/global_values.dart';
 import 'package:rzume/ui/info_modal.dart';
 import 'package:rzume/widgets/counter_notifier.dart';
 import 'package:rzume/widgets/info_overlay_caller.dart';
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => MiscNotifer()),
-        ChangeNotifierProvider(create: (context) => CounterNotifier())
+        ChangeNotifierProvider(create: (context) => CounterNotifier()),
+        ChangeNotifierProvider(create: (context) => GlobalValues())
       ],
       child: MaterialApp(
           theme: lightThemeData,

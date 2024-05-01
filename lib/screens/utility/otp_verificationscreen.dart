@@ -32,7 +32,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     formData.otpInputVal4
   ];
 
-  final CounterNotifier _counter = CounterNotifier();
   final APIService apiService = APIService();
 
   final logger = Logger(

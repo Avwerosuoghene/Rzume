@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
-import 'package:rzume/model/misc-type.dart';
 import 'package:rzume/model/response_payload.dart';
 
 class ExternalServicesAPIProvider {
