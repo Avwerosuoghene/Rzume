@@ -11,7 +11,7 @@ class AuthAPIProvider {
       printer:
           PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
 
-  static Future<ApiResponse<SigninResponse>> login(String? payload) async {
+  static Future<ApiResponse<SigninResponse>> login(dynamic payload) async {
     final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/login');
 
     try {
@@ -29,7 +29,7 @@ class AuthAPIProvider {
     }
   }
 
-  static Future<ApiResponse<Object>> signup(String? payload) async {
+  static Future<ApiResponse<Object>> signup(dynamic payload) async {
     final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/register');
 
     try {
@@ -48,7 +48,7 @@ class AuthAPIProvider {
     }
   }
 
-  static Future<ApiResponse<Object>> validateEmail(String? payload) async {
+  static Future<ApiResponse<Object>> validateEmail(dynamic payload) async {
     final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/validate-email');
 
     try {
@@ -69,7 +69,7 @@ class AuthAPIProvider {
   }
 
   static Future<ApiResponse<SigninResponse>> validateUser(
-      String? payload) async {
+      dynamic payload) async {
     final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/confirm-user');
 
     try {
@@ -90,7 +90,7 @@ class AuthAPIProvider {
   }
 
   static Future<ApiResponse<OtpPasswordResetResponse>> otpPasswordReset(
-      String? payload) async {
+      dynamic payload) async {
     final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/otp-reset-pass');
 
     try {
@@ -112,7 +112,7 @@ class AuthAPIProvider {
   }
 
   static Future<ApiResponse<GenericResponse>> generateOtp(
-      String? payload) async {
+      dynamic payload) async {
     final Uri url = Uri.parse('${APIRoutes.authServiceUrl}/generate-token');
 
     try {

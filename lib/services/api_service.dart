@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:rzume/model/misc-type.dart';
 
 import '../model/response_payload.dart';
 import '../widgets/misc_notifier.dart';
@@ -14,11 +15,26 @@ class APIService {
           PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
 
   Future<dynamic> sendRequest<T>(
-      {required Future Function(String? arg) httpFunction,
+      {required Future Function(dynamic? arg) httpFunction,
+      ISearchQuery? query,
       String? payload,
       required BuildContext? context,
       bool externalService = false}) async {
     final dynamic asyncResponse;
+
+    if (query != null) {
+      try {
+        if (externalService == true) {
+          asyncResponse = await httpFunction(query);
+          logger.i('reponse succesfully sent from provider to subscriber');
+          return asyncResponse as T;
+        }
+      } catch (error) {
+        logger.e(error);
+        return null;
+      }
+      return null;
+    }
 
     if (payload != null) {
       try {

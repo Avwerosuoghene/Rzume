@@ -101,6 +101,12 @@ class IExperience {
   final DateTime endDate;
 }
 
+class ISearchQuery {
+  ISearchQuery({required this.searchParam});
+
+  final String searchParam;
+}
+
 class IApplication {
   IApplication({
     required this.id,

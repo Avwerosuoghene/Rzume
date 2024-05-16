@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -17,6 +19,7 @@ import 'package:rzume/ui/custom_display_card.dart';
 import 'package:rzume/ui/custom_form_field.dart';
 import 'package:rzume/widgets/helper_functions.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:rzume/widgets/helper_functions_async.dart';
 import 'package:rzume/widgets/misc_notifier.dart';
 
 class OnboardingThirdStage extends StatefulWidget {
@@ -39,12 +42,13 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
   final List<ICustomFormField> educationForm = [
     formData.studycourse,
   ];
-  // List<String> availableUniversities = [];
+  List<String> availableUniversities = ["Enter a University"];
 
   final List<IEducation> selectedEducationList = [];
   late SingleValueDropDownController _cnt;
   String? selectedUniversity;
   DateTime? selectedDate;
+  Timer? searchInputTimer;
 
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   bool submitFormClicked = false;
@@ -54,22 +58,34 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
       GlobalKey<CustomDatePickerState>();
   bool proceedToNext = false;
   final APIService apiService = APIService();
-
+  final HelperAsyncFunctions helperFunction = HelperAsyncFunctions();
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    // This ensures the build is complete before trying to update a state
-    // WidgetsBinding.instance?.addPostFrameCallback((_) {
-    //   setUniversitiesList();
-    // });
-    // setUniversitiesList();
   }
 
-  // setUniversitiesList() async {
-  //   availableUniversities = context.watch<GlobalValues>().universities;
+  bool onUniversityNameEntered(dynamic item, String searchValue) {
+    searchInputTimer?.cancel();
+    availableUniversities.clear();
 
-  // }
+    searchInputTimer = Timer(
+        const Duration(seconds: 1),
+        () => (HelperAsyncFunctions.getUniversities(
+                    context, searchValue.toString())
+                .then((returnUniversities) {
+              if (returnUniversities == null || returnUniversities.isEmpty) {
+                availableUniversities.add("University not found");
+              } else {
+                setState(() {
+                  availableUniversities.addAll(returnUniversities);
+                });
+
+                return true;
+              }
+            })));
+
+    return true;
+  }
 
   @override
   void dispose() {
@@ -252,8 +268,6 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> universityList =
-        context.watch<GlobalValues>().universities;
     void submitForm(String action) async {
       final isFormValid = _form.currentState!.validate();
 
@@ -302,10 +316,8 @@ class _OnboardingThirdStageState extends State<OnboardingThirdStage> {
                 CusDropDownButton(
                     onSelectChangeFunction: onUniversitySelected,
                     selectionHint: "Select University",
-                    // selectionItems: availableUniversities != null
-                    //     ? availableUniversities as List<String>
-                    //     : null,
-                    selectionItems: universityList,
+                    searchInputHandler: onUniversityNameEntered,
+                    selectionItems: availableUniversities,
                     searchHint: "Search for University",
                     key: _customDropDownState),
                 (submitFormClicked && selectedUniversity == null)

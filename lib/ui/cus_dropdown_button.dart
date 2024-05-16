@@ -11,6 +11,7 @@ class CusDropDownButton extends StatefulWidget {
     required this.selectionHint,
     required this.selectionItems,
     required this.searchHint,
+    required this.searchInputHandler,
     this.roundnessDegree = Roundness.partial,
     Key? key,
   }) : super(key: key);
@@ -18,6 +19,7 @@ class CusDropDownButton extends StatefulWidget {
   static final GlobalKey<CusDropDownButtonState> globalKey = GlobalKey();
 
   final void Function(String value) onSelectChangeFunction;
+  final bool Function(dynamic item, String value) searchInputHandler;
   final Roundness? roundnessDegree;
   final String selectionHint;
   final List<dynamic>? selectionItems;
@@ -135,10 +137,7 @@ class CusDropDownButtonState extends State<CusDropDownButton> {
               ),
             ),
             searchMatchFn: (item, searchValue) {
-              return item.value
-                  .toString()
-                  .toLowerCase()
-                  .contains(searchValue.toLowerCase());
+              return widget.searchInputHandler(item, searchValue);
             },
           ),
           //This to clear the search value when you close the menu

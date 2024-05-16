@@ -130,6 +130,13 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
     }
   }
 
+  bool onIndustrySearchEntered(dynamic item, String searchValue) {
+    return item.value
+        .toString()
+        .toLowerCase()
+        .contains(searchValue.toLowerCase());
+  }
+
   void submitForm(String action) async {
     final isFormValid = _form.currentState!.validate();
 
@@ -371,6 +378,7 @@ class _OnboardingFourthStageState extends State<OnboardingFourthStage> {
             selectionHint: "Select Industry",
             selectionItems: selectionItems,
             searchHint: "Search for industry",
+            searchInputHandler: onIndustrySearchEntered,
             key: _customDropDownState),
         (submitFormClicked && selectedIndustry == null)
             ? Container(

@@ -12,7 +12,7 @@ class ProfileManagementAPIProvider {
           PrettyPrinter(methodCount: 0, errorMethodCount: 3, lineLength: 50));
 
   static Future<ApiResponse<GenericResponse>> onboardUser(
-      String? payload) async {
+      dynamic payload) async {
     final Uri url = Uri.parse('${APIRoutes.profileServiceUrl}/user-onboarding');
     try {
       return http.post(url, body: payload, headers: {
@@ -32,7 +32,8 @@ class ProfileManagementAPIProvider {
     }
   }
 
-  static Future<ApiResponse<GenericResponse>> getUniversities(oad) async {
+  static Future<ApiResponse<GenericResponse>> getUniversities(
+      queryParam) async {
     final Uri url = Uri.parse('http://universities.hipolabs.com/search');
     try {
       return http.get(url, headers: {
